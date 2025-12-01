@@ -125,5 +125,6 @@ urlpatterns = [
     #path('store/', views.products, name='store'),
     path('search/', views.search_products, name='navbar_search'),
     path('tableros/', views.tableros_diag, name='tableros'),
+    path('cotizacion/', views.cotizacion, name='cotizacion'), 
 
     ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

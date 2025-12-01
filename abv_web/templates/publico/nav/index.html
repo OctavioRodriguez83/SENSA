@@ -126,8 +126,55 @@
         <a href="https://wa.me/+5215579429119" class="whatsapp-float" target="_blank" aria-label="Contactar por WhatsApp">
             <img src="/media-files/publico/whapp.png" alt="WhatsApp" width="60" height="60">
         </a>
+
+        <button class="boton-flotante" onclick="abrirModal()">
+            💬 Cotizar
+        </button>
+        <div id="modalCotizacion" class="modal">
+    
+            <div class="modal-contenido">
+                
+                <span class="cerrar-modal" onclick="cerrarModal()">&times;</span>
+                
+                <h3>Solicitar Cotización</h3>
+                
+                <form method="post" action="{% url 'cotizacion' %}">
+                    {% csrf_token %} 
+                    
+                    {{ form.as_p }} 
+                    
+                    <button type="submit" class="btn btn-primary">Enviar</button>
+                </form>
+                
+            </div>
+        </div>
+
+
+
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous" defer></script>
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous" defer></script>
         <script src={% static 'publico/js/nav/navbarSearch.js' %} defer></script>
+
+        <script>
+            // Referencia al elemento modal
+            var modal = document.getElementById("modalCotizacion");
+
+            // Función para abrir el modal al hacer clic en el botón
+            function abrirModal() {
+                modal.style.display = "block";
+            }
+
+            // Función para cerrar el modal al hacer clic en la "x"
+            function cerrarModal() {
+                modal.style.display = "none";
+            }
+
+            // Cierra el modal si el usuario hace clic fuera del contenido
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
+        </script>
     </body>
 </html>

@@ -387,3 +387,23 @@ class DestacadoForm(forms.Form):
         widget=forms.SelectMultiple(attrs={'class': 'form-control'}),
         label='Selecciona productos destacados'
     )
+
+class cotizacionForm(forms.Form):
+    nombre = forms.CharField(
+        label='Nombre',
+        max_length=100,
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Tu nombre'})
+    )
+    email = forms.EmailField(
+        label='Correo Electrónico',
+        widget=forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Tu correo electrónico'})
+    )
+    telefono = forms.CharField(
+        label='Teléfono',
+        max_length=15,
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Tu número de teléfono'})
+    )
+    mensaje = forms.CharField(
+        label='Mensaje',
+        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 4, 'placeholder': 'Escribe tu mensaje aquí...'})
+    )

@@ -1,0 +1,40 @@
+{% extends "../nav/index.html" %}
+{% load static %}
+
+      {% block link_styles %}
+      <link href="{% static 'publico/css/contacts/contactsstyles.css' %}" rel="stylesheet" />
+      {% endblock %}
+
+      {% block cuerpo %}
+
+
+        <div class="mivi">
+          <h1>Cotización</h1>
+          <div id="cards">
+
+              <div class="card">
+                  <div class="galeria">
+                    <form method="post" action="{% url 'cotizacion' %}">
+                        {% csrf_token %} 
+
+                        {{ form.nombre.label_tag }}<br>
+                        {{ form.nombre }}
+
+                        {{ form.email.label_tag }}<br>
+                        {{ form.email }}
+
+                        {{ form.telefono.label_tag }}<br>
+                        {{ form.telefono }}
+
+                        {{ form.mensaje.label_tag }}<br>
+                        {{ form.mensaje }}<br><br>
+                        
+                        <button type="submit">Enviar Cotización</button>
+                    </form>
+                  </div>
+              </div>
+          </div>
+        </div>
+
+          <script src="{% static 'publico/js/home/home_scripts.js' %}"></script>
+      {% endblock %}
