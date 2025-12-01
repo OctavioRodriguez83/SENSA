@@ -1,0 +1,95 @@
+{% extends "../nav/index.html" %}
+{% load static %}
+
+{% block link_styles %}
+  <link rel="stylesheet" href="{% static 'publico/css/products/productstyles.css' %}" />
+{% endblock %}
+
+{% block cuerpo %}
+<div class="product-page mivi">
+
+  <!-- Header con breadcrumb y título -->
+  <div class="product-header">
+    <nav class="breadcrumb">
+      <a href="{% url 'store' %}" class="breadcrumb-item">
+        <i class="bi bi-house-door-fill"></i> Tienda
+      </a>
+      <span class="breadcrumb-sep">/</span>
+      <span class="breadcrumb-current">{{ producto.producto_nombre }}</span>
+    </nav>
+    <h1 class="product-title">{{ producto.producto_nombre }}</h1>
+  </div>
+
+  <div class="product-main">
+    <!-- Galería de imágenes -->
+    <aside class="product-gallery">
+      <div class="gallery-main">
+        {% if producto.producto_url_img %}
+          <img src="https://abvelectricsupply.com/media-files/{{ producto.producto_url_img.name }}"
+               alt="{{ producto.producto_nombre }}">
+        {% else %}
+          <img src="/media-files/publico/Logo.png"
+               alt="Sin imagen">
+        {% endif %}
+      </div>
+      {% if imagenes_secundarias %}
+      <div class="gallery-thumbs">
+        {% for img in imagenes_secundarias %}
+        <button class="thumb-btn">
+          <img src="https://abvelectricsupply.com/media-files/{{ img.imagen_secundaria.name }}" alt="">
+        </button>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </aside>
+
+    <!-- Detalles y acciones -->
+    <section class="product-details">
+      <div class="details-grid">
+        <div><strong>SKU:</strong> {{ producto.producto_sku }}</div>
+        <div><strong>EAN:</strong> {{ producto.producto_ean }}</div>
+        <div><strong>Modelo:</strong> {{ producto.producto_modelo }}</div>
+        <div><strong>Categoría:</strong> {{ producto.familia.categoria.categoria_name }}</div>
+        <div><strong>Marca:</strong> {{ producto.familia.categoria.marca.marca_name }}</div>
+      </div>
+
+      <p class="product-description">
+        {{ producto.producto_descripcion|default:"Descripción no disponible." }}
+      </p>
+
+      {% if producto.producto_precio_base %}
+      <div class="product-price">
+        <span>Precio:</span>
+        <strong>${{ producto.producto_precio_base }}</strong>
+      </div>
+      {% endif %}
+
+      <!-- Botones de compra -->
+      <div class="buy-buttons">
+        {% if producto.producto_precio_mercadolibre > 0 %}
+        <a href="https://www.mercadolibre.com.mx/" target="_blank" class="buy-btn mercado">
+          <img src="{% static 'publico/img/mercadolibre_logo.png' %}" alt="ML">
+          Mercado Libre
+        </a>
+        {% endif %}
+        {% if producto.producto_precio_amazon > 0 %}
+        <a href="https://www.amazon.com.mx/" target="_blank" class="buy-btn amazon">
+          <img src="{% static 'publico/img/amazon_logo.png' %}" alt="AMZ">
+          Amazon
+        </a>
+        {% endif %}
+        {% if producto.producto_precio_ebay > 0 %}
+        <a href="https://www.ebay.com/" target="_blank" class="buy-btn ebay">
+          <img src="{% static 'publico/img/ebay_logo.jpeg' %}" alt="eBay">
+          eBay
+        </a>
+        {% endif %}
+        <a href="https://wa.me/+5214433182650" target="_blank" class="buy-btn provider">
+          <i class="bi bi-shop"></i>
+          Proveedor Directo
+        </a>
+      </div>
+    </section>
+  </div>
+</div>
+{% endblock %}

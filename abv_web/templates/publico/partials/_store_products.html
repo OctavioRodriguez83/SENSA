@@ -1,0 +1,48 @@
+{% load static %}
+{% if productos %}
+  {% for producto in productos %}
+    <div class="product-card">
+      <!-- Imagen -->
+      {% if producto.producto_url_img %}
+        <img src="https://abvelectricsupply.com//media-files/{{ producto.producto_url_img }}" alt="{{ producto.producto_nombre }}">
+      {% else %}
+        <img src="/media-files/publico/Logo.png" alt="Sin imagen">
+      {% endif %}
+
+      <!-- Título -->
+      <h3 class="pc-title">{{ producto.producto_nombre }}</h3>
+
+      <!-- Precio base -->
+      {% if producto.producto_precio_base %}
+        <p class="pc-price">${{ producto.producto_precio_base }}</p>
+      {% endif %}
+
+      <!-- Descripción -->
+      <p class="pc-desc">{{ producto.producto_descripcion|default:"Sin descripción"|truncatechars:60 }}</p>
+
+      <!-- Disponible en -->
+      <div class="pc-available">
+          <span>Disponible en:</span>
+          <div class="pc-icons">
+            {% if producto.producto_precio_mercadolibre > 0 %}
+              <img src="{% static 'publico/img/mercadolibre_logo.png' %}" alt="Mercado Libre" title="Mercado Libre">
+            {% endif %}
+            {% if producto.producto_precio_amazon > 0 %}
+              <img src="{% static 'publico/img/amazon_logo.png' %}" alt="Amazon" title="Amazon">
+            {% endif %}
+            {% if producto.producto_precio_ebay > 0 %}
+              <img src="{% static 'publico/img/ebay_logo.jpeg' %}" alt="eBay" title="eBay">
+            {% endif %}
+            {% if producto.producto_precio_base > 0 %}
+              <i class="bi bi-shop" title="Proveedor Directo"></i>
+            {% endif %}
+          </div>
+        </div>
+
+      <!-- Ver detalle -->
+      <a href="{% url 'product' producto.producto_sku %}" class="btn-detalle">Ver detalle</a>
+    </div>
+  {% endfor %}
+{% else %}
+  <div class="no-products"><p>No se encontraron productos disponibles.</p></div>
+{% endif %}

@@ -1,0 +1,164 @@
+/* ——————————————————————————————————————
+   SECCIÓN TIENDAS
+   —————————————————————————————————————— */
+.tiendas-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); /* 240px → 15rem */
+  gap: 1rem;
+  width: 100%;
+  margin-bottom: 2rem;
+  justify-items: center;
+}
+
+.tienda-card {
+  background: #fff;
+  border-radius: 0.75rem;
+  box-shadow: 0 0.25rem 1rem rgba(0,0,0,0.1);
+  width: 100%;
+  max-width: 24rem;
+  padding: 2.5rem 2rem;
+  text-align: center;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.2s, box-shadow 0.2s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.tienda-card:hover {
+  transform: translateY(-0.3125rem);   /* 5px → 0.3125rem */
+  box-shadow: 0 0.375rem 1.25rem rgba(0,0,0,0.15); /* 6px 20px → 0.375rem 1.25rem */
+}
+
+.tienda-card img {
+  width: 9rem;                        /* 120px → 7.5rem */
+  height: 9rem;                       /* 120px → 7.5rem */
+  object-fit: contain;
+}
+
+.tienda-card span {
+  margin-top: 1rem;
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+
+/* ——————————————————————————————————————
+   CARRUSEL DE PRODUCTOS DESTACADOS
+   —————————————————————————————————————— */
+.seccion-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 2rem 0 1rem;
+  text-align: center;
+}
+
+.carousel-destacados {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  overflow: hidden;
+  margin: 2rem 0;
+}
+
+.carousel-btn {
+  background: transparent;
+  color: #1E1E1E;
+  border: none;
+  box-shadow: none;
+  opacity: 0.5;
+  width: 2.5rem;
+  height: 2.5rem;
+  font-size: 2rem;
+  border-radius: 50%;
+  transition: opacity 0.2s, background 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.carousel-btn:hover {
+  opacity: 1;
+  background: transparent;
+  color: #000;
+}
+
+.carousel-cards {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  width: 100%;
+}
+
+
+/* ─── CARD DESTACADO ───────────────────────── */
+.card-destacado {
+  flex: 0 0 33.33%;
+  max-width: 300px;
+  background-color: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  margin: 1rem;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.3s ease;
+}
+
+.card-destacado:hover {
+  transform: translateY(-5px);
+}
+
+.card-destacado img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-bottom: 1rem;
+}
+
+.card-destacado h4 {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #1E1E1E;
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+
+.card-destacado p {
+  font-size: 0.95rem;
+  color: #444;
+  text-align: center;
+  line-height: 1.4;
+}
+.card-destacado a{
+  width: 100%;
+}
+
+.contact-card {
+  /* hereda estilos de .tienda-card */
+  text-align: center;
+}
+
+.contact-card span {
+  margin-top: 1rem;
+  font-size: 1.1rem;
+}
+
+.contact-card .contact-info {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  color: #555;
+  line-height: 1.4;
+}
+
+
+/* ─── RESPONSIVE ────────────────────────────── */
+@media (max-width: 56.25rem) { /* 900px → 56.25rem */
+  .card-destacado { flex: 0 0 45%; }
+}
+@media (max-width: 37.5rem) {  /* 600px → 37.5rem */
+  .card-destacado { flex: 0 0 90%; }
+}

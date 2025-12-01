@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        {% load static %}
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Light On</title>
+        <link rel="icon" type="image/svg+xml" href="/media-files/publico/icon.png" />
+
+        <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+        <link rel="preconnect" href="https://cdn.jsdelivr.net">
+        <link rel="preconnect" href="https://unpkg.com">
+        <link rel="preconnect" href="https://abvelectricsupply.com/">
+        <link rel="preconnect" href="https://hgb-imagenes.s3.us-east-2.amazonaws.com">
+
+        <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/webfonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin>
+        <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/webfonts/fa-brands-400.woff2" as="font" type="font/woff2" crossorigin>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
+        <link rel="stylesheet" href="{% static 'publico/css/nav/styles.css' %}" />
+        
+        {% block link_styles %}
+        {% endblock %}
+    </head>
+    <body>
+        <nav id="nav" class="navbar navbar-expand-xl navbar-dark sticky-top">
+            <div class="container-fluid d-flex justify-content-between px-3">
+                <a class="navbar-brand" href="/">
+                    <img id="logo" src="/media-files/publico/Logo2.png" alt="ABV ELECTRIC SUPPLY" width="100" height="40">
+                </a>
+                <div class="input-group" style="max-width: 600px;">
+                    <input type="text" id="navbar-search" class="form-control" placeholder="Buscar producto..." aria-label="Buscar producto...">
+                    <button class="btn btn-outline-light" type="button" id="navbar-search-btn" onclick="window.location.href = `/products/?search=${encodeURIComponent(document.getElementById('navbar-search').value)}`;">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+                <div id="navbar-search-results" class="position-absolute bg-white border rounded w-100 mt-1"></div>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse justify-content-end" id="navbarCollapse">
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        <li class="nav-item active">
+                            <a class="nav-link" href="/"><i class="fas fa-home"></i> INICIO</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'about' %}"><i class="fas fa-bolt"></i> EMPRESA</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'products' %}"><i class="fas fa-box"></i> PRODUCTOS</a>
+                        </li>
+                        <!-- <li class="nav-item">
+                            <a class="nav-link" href="{% url 'store' %}"><i class="fas fa-shopping-cart"></i> TIENDA</a>
+                        </li>-->
+                        <li class="nav-item">
+                            <a class="nav-link" href="/services/"><i class="fas fa-user-cog"></i> SERVICIOS</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'contacts' %}"><i class="fas fa-envelope"></i> CONTACTO</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        
+        {% block cuerpo %}
+        {% endblock %}
+                
+        <footer class="footer-container">
+            <div class="container-xl px-4">
+                <div class="row">
+                    <div class="col-md-6 col-lg-2 mb-4 mb-lg-0">
+                        <h2>Contactos</h2>
+                        <p><i class="fas fa-globe"></i> www.lighton.mx</p>
+                        <p><i class="fas fa-phone"></i> 55 5521 9929</p>
+                    </div>
+                    <div class="col-md-6 col-lg-2 mb-4 mb-lg-0">
+                        <h2>Redes Sociales</h2>
+                        <p><i class="fab fa-facebook"></i>
+                            <a href="https://www.facebook.com/Lightonmx" target="_blank">Light On </a>
+                        </p>
+                    </div>
+                    <div class="col-12 col-lg-8">
+                        <div class="row">
+                            <div class="col-md-6 col-lg-6 mb-4 mb-md-0 footer-section map d-none d-sm-block">
+                                <iframe 
+                                    src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d7525.091046372264!2d-99.14660500000001!3d19.432033!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x85d1ff2ab0a5e6b5%3A0x26d5145d4e781295!2sVictoria%2095h%2C%20Colonia%20Centro%2C%20Centro%2C%20Cuauht%C3%A9moc%2C%2006050%20Ciudad%20de%20M%C3%A9xico%2C%20CDMX!5e0!3m2!1ses-419!2smx!4v1762454771433!5m2!1ses-419!2smx" 
+                                    width="400" height="250"
+                                    allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+                                    class="w-100 rounded">
+                                </iframe>
+                            </div>
+                            <div class="col-12 col-md-6 col-lg-3 mb-4 mb-md-0 footer-section hour">
+                                <h2>Hora Centro</h2>
+                                <p><i class="fas fa-clock"></i> Lunes a Viernes 09:00 – 17:00 hrs</p>
+                                <p><i class="fas fa-clock"></i> Sábado 10:00 – 14:00 hrs</p>
+                            </div>
+                            <div class="col-12 col-lg-3 footer-section direccion">
+                                <h2>Dirección</h2>
+                                <p>Light ON</p>
+                                <p>Victoria 95 local C, colonia centro, CDMX.</p>
+                                <a href="https://maps.app.goo.gl/Hpk2cHivyG7ZEnrAA"
+                                    target="_blank"
+                                    class="direction-button">Cómo llegar</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="footer-bottom pt-3">
+                    <hr class="border-secondary">
+                    <p class="text-center small mb-0">
+                        <span class="font-bold">© 2025 Light ON.</span>
+                        Todos los derechos reservados.
+                    </p>
+                </div>
+            </div>
+        </footer>
+        <a href="https://wa.me/+5215579429119" class="whatsapp-float" target="_blank" aria-label="Contactar por WhatsApp">
+            <img src="/media-files/publico/whapp.png" alt="WhatsApp" width="60" height="60">
+        </a>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous" defer></script>
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous" defer></script>
+        <script src={% static 'publico/js/nav/navbarSearch.js' %} defer></script>
+    </body>
+</html>

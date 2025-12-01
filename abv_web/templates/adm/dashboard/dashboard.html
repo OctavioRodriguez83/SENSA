@@ -1,0 +1,213 @@
+{% extends "../nav/index.html" %}
+{% load static %}
+
+  {% block title %}Dashboard – ABV ELECTRIC SUPPLY{% endblock %}
+
+  {% block link_styles %}
+  <!-- FontAwesome for Icons -->
+  <link
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    rel="stylesheet"
+  />
+  <style>
+    /* Fondo con gradiente sutil */
+    body {
+      background: linear-gradient(
+        135deg,
+        var(--color-background-50) 0%,
+        #e5e7eb 100%
+      );
+    }
+    /* Card Hover Effects */
+    .card-dashboard {
+      transition: transform .2s, box-shadow .2s;
+      cursor: pointer;
+      background: #fff;
+      border: none;
+      border-radius: .5rem;
+      box-shadow: 0 .125rem .25rem rgba(0,0,0,.075);
+    }
+    .card-dashboard:hover {
+      transform: translateY(-4px) scale(1.02);
+      box-shadow: 0 1rem 2rem rgba(0,0,0,.15);
+    }
+    .card-icon {
+      font-size: 2.5rem;
+      color: var(--bs-primary);
+    }
+    .section-title {
+      font-weight: 600;
+      color: var(--bs-secondary);
+      border-bottom: 3px solid var(--bs-primary);
+      display: inline-block;
+      padding-bottom: .25rem;
+      margin-bottom: 1.5rem;
+    }
+    /* Ajustes de colores de métricas */
+    .metric-card {
+      border-radius: .5rem;
+      box-shadow: 0 .125rem .25rem rgba(0,0,0,.075);
+    }
+  </style>
+  {% endblock %}
+
+
+  {% block cuerpo %}
+  <div class="min-vh-100 py-4">
+    <div class="container">
+      <!-- Fecha y hora -->
+      <div class="d-flex justify-content-end mb-4">
+        <span id="currentDateTime" class="fw-semibold fs-6 text-secondary"></span>
+      </div>
+
+      <!-- Sección: Accesos Directos -->
+      <h4 class="section-title">Accesos Directos</h4>
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 mb-5">
+        <!-- Almacenes -->
+        <div class="col">
+          <a href="{% url 'familias' %}" class="text-decoration-none">
+            <div class="card-dashboard d-flex flex-column align-items-center text-center p-4 h-100">
+              <i class="fas fa-warehouse card-icon mb-3"></i>
+              <h5 class="mb-1 text-dark">Familias</h5>
+              <small class="text-muted">Gestiona Familias de productos</small>
+            </div>
+          </a>
+        </div>
+        <!-- Categorías -->
+        <div class="col">
+          <a href="{% url 'categorias' %}" class="text-decoration-none">
+            <div class="card-dashboard d-flex flex-column align-items-center text-center p-4 h-100">
+              <i class="fas fa-tags card-icon mb-3"></i>
+              <h5 class="mb-1 text-dark">Categorías</h5>
+              <small class="text-muted">Organiza productos</small>
+            </div>
+          </a>
+        </div>
+        <!-- Marcas -->
+        <div class="col">
+          <a href="{% url 'marcas' %}" class="text-decoration-none">
+            <div class="card-dashboard d-flex flex-column align-items-center text-center p-4 h-100">
+              <i class="fas fa-copyright card-icon mb-3"></i>
+              <h5 class="mb-1 text-dark">Marcas</h5>
+              <small class="text-muted">Define fabricantes</small>
+            </div>
+          </a>
+        </div>
+        <!-- Productos -->
+        <div class="col">
+          <a href="{% url 'productos' %}" class="text-decoration-none">
+            <div class="card-dashboard d-flex flex-column align-items-center text-center p-4 h-100">
+              <i class="fas fa-box-open card-icon mb-3"></i>
+              <h5 class="mb-1 text-dark">Productos</h5>
+              <small class="text-muted">Administra inventario</small>
+            </div>
+          </a>
+        </div>
+        <!-- Tiendas -->
+        <div class="col">
+          <a href="{% url 'tiendas' %}" class="text-decoration-none">
+            <div class="card-dashboard d-flex flex-column align-items-center text-center p-4 h-100">
+              <i class="fas fa-store card-icon mb-3"></i>
+              <h5 class="mb-1 text-dark">Tiendas</h5>
+              <small class="text-muted">Puntos de venta</small>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <!-- Sección: Contenido -->
+      <h4 class="section-title">Contenido</h4>
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 mb-5">
+        <!-- Carrusel Banner -->
+        <div class="col">
+          <a href="{% url 'carrouselBanner' %}" class="text-decoration-none">
+            <div class="card-dashboard d-flex flex-column align-items-center text-center p-4 h-100">
+              <i class="fas fa-images card-icon mb-3"></i>
+              <h5 class="mb-1 text-dark">Carrusel del Banner</h5>
+              <small class="text-muted">Gestiona el slider</small>
+            </div>
+          </a>
+        </div>
+        <!-- Productos Destacados -->
+        <div class="col">
+          <a href="{% url 'productos_destacados' %}" class="text-decoration-none">
+            <div class="card-dashboard d-flex flex-column align-items-center text-center p-4 h-100">
+              <i class="fas fa-star card-icon mb-3"></i>
+              <h5 class="mb-1 text-dark">Productos destacados</h5>
+              <small class="text-muted">Elige destacados</small>
+            </div>
+          </a>
+        </div>
+        <!-- Proyectos -->
+        <div class="col">
+          <a href="{% url 'proyectos' %}" class="text-decoration-none">
+            <div class="card-dashboard d-flex flex-column align-items-center text-center p-4 h-100">
+              <i class="fas fa-project-diagram card-icon mb-3"></i>
+              <h5 class="mb-1 text-dark">Proyectos</h5>
+              <small class="text-muted">Gestiona proyectos</small>
+            </div>
+          </a>
+        </div>
+
+        <!-- Proyectos Destacados -->
+          <div class="col">
+          <a href="{% url 'proyectos_destacados' %}" class="text-decoration-none">
+            <div class="card-dashboard d-flex flex-column align-items-center text-center p-4 h-100">
+              <i class="fas fa-plus card-icon mb-3"></i>
+              <h5 class="mb-1 text-dark">Agregar Proyecto Destacado</h5>
+              <small class="text-muted">Añade destacados</small>
+            </div>
+          </a>
+        </div>
+
+        <!-- Servicios -->
+        <div class="col">
+          <a href="{% url 'servicios' %}" class="text-decoration-none">
+            <div class="card-dashboard d-flex flex-column align-items-center text-center p-4 h-100">
+              <i class="fas fa-concierge-bell card-icon mb-3"></i>
+              <h5 class="mb-1 text-dark">Servicios</h5>
+              <small class="text-muted">Administra servicios</small>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <!-- Resumen de métricas -->
+      <h4 class="section-title">Resumen</h4>
+      <div class="row g-4">
+        <div class="col-sm-6 col-md-3">
+          <div class="card metric-card bg-primary text-white h-100 p-3">
+            <div class="d-flex flex-column align-items-center">
+              <i class="fas fa-box-open fa-2x mb-2"></i>
+              <h6>Total de Productos</h6>
+              <h3>{{ total_products }}</h3>
+            </div>
+          </div>
+        </div>
+        {# Más métricas aquí... #}
+      </div>
+
+    </div>
+  </div>
+  {% endblock %}
+
+{% block link_scripts %}
+  <!-- Bootstrap JS Bundle con Popper -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  function updateDateTime() {
+    const now = new Date();
+    const opts = {
+      weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
+      hour: '2-digit', minute: '2-digit', second: '2-digit'
+    };
+    document.getElementById('currentDateTime')
+      .textContent = now.toLocaleDateString('es-ES', opts);
+  }
+  updateDateTime();
+  setInterval(updateDateTime, 1000);
+</script>
+{% endblock %}

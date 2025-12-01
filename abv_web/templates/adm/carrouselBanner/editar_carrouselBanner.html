@@ -1,0 +1,131 @@
+{% extends "../nav/index.html" %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  {% block link_styles %}
+    <!-- DataTables Bootstrap 5 CSS -->
+    <link
+      href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css"
+      rel="stylesheet"
+    />
+    <!-- jQuery y DataTables JS -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+  {% endblock %}
+</head>
+<body>
+  {% block cuerpo %}
+  <div class="container-fluid py-4">
+    <div class="card shadow-sm border-0">
+      <div class="card-header bg-light">
+        <h3 class="mb-0 text-center">Carrousel Banner</h3>
+      </div>
+      <div class="card-body bg-white">
+        <!-- Botón Agregar -->
+        <div class="d-flex justify-content-end mb-3">
+          <button type="button" class="btn btn-success fw-bold" data-bs-toggle="modal" data-bs-target="#editBannerModal">
+            <i class="fas fa-plus me-1"></i> Agregar
+          </button>
+        </div>
+        <!-- Tabla -->
+        <div class="table-responsive">
+          <table id="carrouselBannerTable" class="table table-striped table-hover table-bordered align-middle">
+            <thead class="table-light">
+              <tr>
+                <th>Título</th>
+                <th>Descripción</th>
+                <th class="text-center">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for post in posts %}
+              <tr>
+                <td>{{ post.carrouselBanner_name }}</td>
+                <td>{{ post.carrouselBanner_descripcion }}</td>
+                <td class="text-center">
+                  <a href="{% url 'editar_carrouselBanner' post.id %}" class="btn btn-sm btn-warning me-1" onclick="event.stopPropagation()">
+                    Editar <i class="bi bi-pencil-fill"></i>
+                  </a>
+                  <a href="{% url 'eliminar_carrouselBanner' post.id %}" class="btn btn-sm btn-danger" onclick="event.stopPropagation()">
+                    Eliminar <i class="fas fa-trash-alt"></i>
+                  </a>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal de Edición (se muestra automáticamente si hay objeto a editar) -->
+    <div class="modal fade" id="editBannerModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="editBannerModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="editBannerModalLabel">Editar Banner</h5>
+            <a href="{% url 'carrouselBanner' %}" class="btn-close"></a>
+          </div>
+          <form action="{% url 'editar_carrouselBanner' carrouselBanner.id %}" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="modal-body">
+              <div class="mb-3">
+                <label class="form-label">Título del Banner</label>
+                <input type="text" name="carrouselBanner_name" class="form-control" value="{{ carrouselBanner.carrouselBanner_name }}" required>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Descripción del Banner</label>
+                <textarea name="carrouselBanner_descripcion" class="form-control" required>{{ carrouselBanner.carrouselBanner_descripcion }}</textarea>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Imagen actual</label>
+                <img class="img-fluid mb-2" src="/media-files/{{ carrouselBanner.carrouselBanner_url_img.name }}" alt="{{ carrouselBanner.carrouselBanner_name }}" width="100">
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Cambiar imagen</label>
+                <input type="file" name="carrouselBanner_url_img" class="form-control">
+              </div>
+            </div>
+            <div class="modal-footer">
+              <a href="{% url 'carrouselBanner' %}" class="btn btn-secondary">Cancelar</a>
+              <button type="submit" class="btn btn-primary">Guardar cambios</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    $(document).ready(function() {
+      // Inicialización de DataTables
+      $("#carrouselBannerTable").DataTable({
+        language: {
+          search: "Buscar:",
+          lengthMenu: "Mostrar \\_MENU\\_ registros",
+          zeroRecords: "No se encontraron registros",
+          info: "Página \\_PAGE\\_ de \\_PAGES\\_",
+          infoEmpty: "Sin registros",
+          infoFiltered: "(filtrado de \\_MAX\\_ totales)",
+          paginate: {
+            first: "Primero",
+            last: "Último",
+            next: "Siguiente",
+            previous: "Anterior"
+          }
+        },
+        responsive: true,
+        autoWidth: false
+      });
+      // Mostrar modal de edición automáticamente si se envió el objeto a editar
+      {% if carrouselBanner %}
+        var editModal = new bootstrap.Modal(document.getElementById("editBannerModal"));
+        editModal.show();
+      {% endif %}
+    });
+  </script>
+  {% endblock %}
+</body>
+</html>

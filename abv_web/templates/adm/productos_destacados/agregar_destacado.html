@@ -1,0 +1,161 @@
+{% extends "../nav/index.html" %}
+{% load static %}
+
+{% block title %}Agregar Destacados{% endblock %}
+
+{% block link_styles %}
+  <!-- DataTables Bootstrap 5 CSS -->
+  <link
+    href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css"
+    rel="stylesheet"
+  />
+{% endblock %}
+
+{% block cuerpo %}
+<div class="container-fluid py-4">
+  <h2 class="mb-4 text-center">Agregar Productos Destacados</h2>
+  <form method="post" action="{% url 'agregar_destacado' %}">
+    {% csrf_token %}
+
+    <!-- === Tabla de TODOS los productos === -->
+    <div class="card shadow-sm mb-4">
+      <div class="card-header bg-light">
+        <h4 class="mb-0">Todos los productos</h4>
+      </div>
+      <div class="card-body">
+        <table
+          id="allProductsTable"
+          class="table table-striped table-hover table-bordered"
+        >
+          <thead class="table-light">
+            <tr>
+              <th>ID</th>
+              <th>Nombre</th>
+              <th>Acción</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for producto in productos %}
+            <tr id="filaProd{{ producto.id }}">
+              <td>{{ producto.id }}</td>
+              <td>{{ producto.producto_nombre }}</td>
+              <td>
+                <button
+                  type="button"
+                  class="btn btn-success btn-sm agregar-btn"
+                  data-id="{{ producto.id }}"
+                  data-nombre="{{ producto.producto_nombre }}"
+                >Agregar</button>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- === Tabla de SELECCIONADOS === -->
+    <div class="card shadow-sm mb-4">
+      <div class="card-header bg-light">
+        <h4 class="mb-0">Productos seleccionados</h4>
+      </div>
+      <div class="card-body">
+        <table
+          id="selectedProductsTable"
+          class="table table-striped table-hover table-bordered"
+        >
+          <thead class="table-light">
+            <tr>
+              <th>ID</th>
+              <th>Nombre</th>
+              <th>Acción</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Se llenará dinámicamente -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- select oculto para enviar IDs -->
+    <select id="selectedProducts" name="productos" multiple hidden></select>
+
+    <!-- Botón GUARDAR -->
+    <div class="d-flex justify-content-center">
+      <button type="submit" class="btn btn-primary fw-bold">
+        Guardar Destacados
+      </button>
+    </div>
+  </form>
+</div>
+
+{# --- Scripts al final para que todo el DOM exista --- #}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+
+<script>
+  $(document).ready(function(){
+    // Inicializa DataTables en la tabla de TODOS los productos
+    $('#allProductsTable').DataTable({
+      language: {
+        search: "Buscar:",
+        lengthMenu: "Mostrar _MENU_ registros",
+        zeroRecords: "No se encontraron registros",
+        info: "Página _PAGE_ de _PAGES_",
+        infoEmpty: "Sin registros",
+        infoFiltered: "(filtrado de _MAX_ totales)",
+        paginate: {
+          first: "Primero",
+          last: "Último",
+          next: "Siguiente",
+          previous: "Anterior"
+        }
+      },
+      responsive: true,
+      autoWidth: false
+    });
+
+    // Agregar producto a la lista de seleccionados
+    $(document).on('click', '.agregar-btn', function(){
+      const id = $(this).data('id');
+      const nombre = $(this).data('nombre');
+
+      // Solo si no está ya
+      if($('#selectedProducts option[value="'+id+'"]').length === 0){
+        // Agrega fila
+        $('#selectedProductsTable tbody').append(
+          `<tr id="selectedProd${id}">
+             <td>${id}</td>
+             <td>${nombre}</td>
+             <td>
+               <button
+                 type="button"
+                 class="btn btn-danger btn-sm quitar-btn"
+                 data-id="${id}"
+               >Quitar</button>
+             </td>
+           </tr>`
+        );
+        // Agrega opción al select oculto
+        $('#selectedProducts').append(
+          `<option value="${id}" selected></option>`
+        );
+        // Deshabilita botón
+        $(this).prop('disabled', true);
+      }
+    });
+
+    // Quitar producto de la lista de seleccionados
+    $(document).on('click', '.quitar-btn', function(){
+      const id = $(this).data('id');
+      // Quita fila y opción
+      $('#selectedProd' + id).remove();
+      $('#selectedProducts option[value="'+id+'"]').remove();
+      // Reactiva botón
+      $('#filaProd' + id + ' .agregar-btn').prop('disabled', false);
+    });
+  });
+</script>
+{% endblock %}

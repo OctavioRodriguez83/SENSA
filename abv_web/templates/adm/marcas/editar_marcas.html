@@ -1,0 +1,114 @@
+{% extends "../nav/index.html" %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    {% block link_styles %}
+    <!-- DataTables Bootstrap 5 CSS -->
+    <link href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
+    <!-- jQuery y DataTables JS -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+    {% endblock %}
+  </head>
+  <body>
+    {% block cuerpo %}
+    <div class="container-fluid py-4">
+      <div class="card shadow-sm border-0">
+        <div class="card-header bg-light">
+          <h3 class="mb-0 text-center">Marcas</h3>
+        </div>
+        <div class="card-body bg-white">
+          <!-- Tabla de marcas (similar a la lista de marcas) -->
+          <div class="table-responsive">
+            <table id="marcasTable" class="table table-striped table-hover table-bordered align-middle">
+              <thead class="table-light">
+                <tr>
+                  <th>Marca</th>
+                  <th>Descripción</th>
+                  <th class="text-center">Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for marca in marcas %}
+                <tr>
+                  <td>{{ marca.marca_name }}</td>
+                  <td>{{ marca.marca_descripcion }}</td>
+                  <td class="text-center">
+                    <a href="{% url 'editar_marca' marca.id %}" class="btn btn-sm btn-warning me-1">
+                      Editar <i class="bi bi-pencil-fill"></i>
+                    </a>
+                    <a href="{% url 'eliminar_marca' marca.id %}" class="btn btn-sm btn-danger">
+                      Eliminar <i class="fas fa-trash-alt"></i>
+                    </a>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal de Edición de Marca -->
+    <div class="modal fade show d-block" id="editMarcaModal" tabindex="-1" aria-labelledby="editMarcaModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content border-0 shadow-lg rounded-4">
+          <div class="modal-header bg-primary text-white rounded-top-4">
+            <h5 class="modal-title fw-bold" id="editMarcaModalLabel">Editar Marca</h5>
+            <a href="{% url 'marcas' %}" class="btn-close btn-close-white"></a>
+          </div>
+          <form action="{% url 'editar_marca' marca.id %}" method="POST" enctype="multipart/form-data" class="p-3">
+            {% csrf_token %}
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Nombre de la Marca</label>
+              <input type="text" name="marca_name" value="{{ marca.marca_name }}" class="form-control rounded-3 shadow-sm" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Descripción de la Marca</label>
+              <textarea name="marca_descripcion" class="form-control rounded-3 shadow-sm" required>{{ marca.marca_descripcion }}</textarea>
+            </div>
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Imagen Actual</label>
+              {% if marca.marca_url_img %}
+              <img src="/media-files/{{ marca.marca_url_img.name }}" alt="{{ marca.marca_name }}" width="100" class="d-block mb-2">
+              {% endif %}
+            </div>
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Cambiar Imagen</label>
+              <input type="file" name="marca_url_img" class="form-control rounded-3 shadow-sm">
+            </div>
+            <div class="modal-footer border-0">
+              <a href="{% url 'marcas' %}" class="btn btn-outline-secondary">Cancelar</a>
+              <button type="submit" class="btn btn-primary fw-bold">Guardar cambios</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      $(document).ready(function () {
+        $("#marcasTable").DataTable({
+          language: {
+            search: "Buscar:",
+            lengthMenu: "Mostrar _MENU_ registros",
+            zeroRecords: "No se encontraron registros",
+            info: "Página _PAGE_ de _PAGES_",
+            infoEmpty: "Sin registros",
+            infoFiltered: "(filtrado de _MAX_ totales)",
+            paginate: { first: "Primero", last: "Último", next: "Siguiente", previous: "Anterior" }
+          },
+          responsive: true,
+          autoWidth: false
+        });
+        // Mostrar modal de edición automáticamente
+        var editModal = new bootstrap.Modal(document.getElementById("editMarcaModal"));
+        editModal.show();
+      });
+    </script>
+    {% endblock %}
+  </body>
+</html>

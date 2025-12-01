@@ -1,0 +1,244 @@
+{% extends "../nav/index.html" %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+
+{% block title %}Marcas - SB Admin{% endblock %}
+
+  {% block link_styles %}
+    <!-- DataTables Bootstrap 5 CSS -->
+    <link
+      href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css"
+      rel="stylesheet"
+    />
+    <!-- FontAwesome ya está en nav/index.html -->
+    <!-- jQuery y DataTables JS -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+  {% endblock %}
+</head>
+<body>
+  {% block cuerpo %}
+  <div class="container-fluid py-4">
+  <div class="card shadow-sm border-0">
+    <div class="card-header bg-light">
+      <h3 class="mb-0 text-center">Marcas</h3>
+    </div>
+    <div class="card-body bg-white">
+      <!-- Filtros de estado y botón Agregar -->
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <div class="btn-group btn-group-sm" role="group" aria-label="Filtros de estado">
+          <a href="{% url 'marcas' %}?status=active" class="btn btn-outline-primary {% if filtro == 'active' %}active{% endif %}">
+            Activos
+          </a>
+          <a href="{% url 'marcas' %}?status=inactive" class="btn btn-outline-primary {% if filtro == 'inactive' %}active{% endif %}">
+            No activos
+          </a>
+        </div>
+        <button type="button" class="btn btn-success fw-bold" data-bs-toggle="modal" data-bs-target="#staticBackdropAdd">
+          <i class="fas fa-plus me-1"></i> Agregar
+        </button>
+      </div>
+
+      <!-- Tabla de marcas -->
+      <div class="table-responsive">
+        <table id="marcasTable" class="table table-striped table-hover table-bordered align-middle">
+          <thead class="table-light">
+            <tr>
+              <th>Marca</th>
+              <th>Descripción</th>
+              <th class="text-center">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for marca in marcas %}
+            <tr>
+              <td>{{ marca.marca_name }}</td>
+              <td>{{ marca.marca_descripcion }}</td>
+              <td class="text-center">
+    {% if filtro == 'inactive' %}
+      <a href="{% url 'restaurar_marca' marca.id %}"
+         class="btn btn-sm btn-success"
+         onclick="return confirm('¿Estás seguro de restaurar esta marca?')">
+         Restaurar <i class="bi bi-arrow-clockwise"></i>
+      </a>
+    {% else %}
+      <a href="{% url 'editar_marca' marca.id %}"
+         class="btn btn-sm btn-warning me-1">
+         Editar <i class="bi bi-pencil-fill"></i>
+      </a>
+      <a href="{% url 'eliminar_marca' marca.id %}"
+         class="btn btn-sm btn-danger">
+         Eliminar <i class="fas fa-trash-alt"></i>
+      </a>
+    {% endif %}
+  </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <!-- Modal de Agregar -->
+  <div
+    class="modal fade"
+    id="staticBackdropAdd"
+    data-bs-backdrop="static"
+    data-bs-keyboard="false"
+    tabindex="-1"
+    aria-labelledby="staticBackdropAddLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="staticBackdropAddLabel">Nueva Marca</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <form action="{% url 'marcas' %}" method="POST" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="modal-body">
+            <div class="mb-3">
+              <label class="form-label">Nombre de la marca</label>
+              {{ formM.marca_name }}
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Descripción</label>
+              {{ formM.marca_descripcion }}
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Selecciona imagen</label>
+              {{ formM.marca_url_img }}
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-primary">Guardar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Visualización -->
+<div
+  class="modal fade"
+  id="viewMarcaModal"
+  tabindex="-1"
+  aria-labelledby="viewMarcaModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content border-0 rounded-4 shadow-lg">
+      <!-- Header con fondo suave -->
+      <div class="modal-header bg-secondary bg-opacity-10 border-bottom-0">
+        <h5 class="modal-title fw-bold" id="viewMarcaModalLabel"></h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Cerrar"
+        ></button>
+      </div>
+
+      <div class="modal-body p-4">
+        <div class="row g-4">
+          <!-- Columna Imagen -->
+          <div class="col-md-5 text-center">
+            <div class="card border-0">
+              <img
+                id="viewMarcaImg"
+                src=""
+                alt=""
+                class="img-fluid rounded-3 shadow-sm"
+                style="max-height:30rem; width:auto;"
+              >
+              <figcaption class="mt-2 text-muted small">
+              </figcaption>
+            </div>
+          </div>
+          <!-- Columna Detalles -->
+          <div class="col-md-7 d-flex flex-column justify-content-between">
+            <div>
+              <h4 class="fw-semibold mb-3" id="viewMarcaModalLabel"></h4>
+              <p id="viewMarcaDesc" class="fs-6 lh-base"></p>
+            </div>
+            <!-- Acciones inline -->
+            <div class="mt-4">
+              <a
+                id="viewEditBtn"
+                href="#"
+                class="btn btn-outline-warning me-2"
+              >
+                <i class="bi bi-pencil-fill"></i> Editar
+              </a>
+              <a
+                id="viewDeleteBtn"
+                href="#"
+                class="btn btn-outline-danger me-2"
+              >
+                <i class="fas fa-trash-alt"></i> Eliminar
+              </a>
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >Cerrar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  <!-- Scripts -->
+  <script>
+    $(function() {
+      // DataTable
+      $("#marcasTable").DataTable({
+        language: {
+          search: "Buscar:",
+          lengthMenu: "Mostrar _MENU_ registros",
+          zeroRecords: "No se encontraron registros",
+          info: "Página _PAGE_ de _PAGES_",
+          infoEmpty: "Sin registros",
+          infoFiltered: "(filtrado de _MAX_ totales)",
+          paginate: {
+            first: "Primero",
+            last: "Último",
+            next: "Siguiente",
+            previous: "Anterior"
+          }
+        },
+        responsive: true,
+        autoWidth: false
+      });
+
+      // Click en fila para ver detalle
+      $(".clickable-row").on("click", function() {
+        const name      = $(this).data("name");
+        const desc      = $(this).data("desc");
+        const imgUrl    = $(this).data("img-url");
+        const editUrl   = $(this).data("edit-url");
+        const deleteUrl = $(this).data("delete-url");
+
+        $("#viewMarcaModalLabel").text(name);
+        $("#viewMarcaDesc").text(desc);
+        $("#viewMarcaImg").attr({ src: imgUrl, alt: name });
+        $("#viewEditBtn").attr("href", editUrl);
+        $("#viewDeleteBtn").attr("href", deleteUrl);
+        $("#viewMarcaImg").siblings("figcaption").text("Vista previa de " + name);
+        new bootstrap.Modal($("#viewMarcaModal")).show();
+      });
+    });
+  </script>
+  {% endblock %}
+</body>
+</html>

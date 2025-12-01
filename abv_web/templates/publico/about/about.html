@@ -1,0 +1,97 @@
+{% extends "../nav/index.html" %}
+{% load static %}
+
+      {% block link_styles %}
+      <link href="{% static 'publico/css/about/aboutstyles.css' %}" rel="stylesheet" />
+      {% endblock %}
+
+      {% block cuerpo %}
+        <div id="heder-cuerpo">
+          <div class="mivi">
+            <h1>Acerca de Nosostros</h1>
+            <div id="cards">
+                <div class="card">
+                    <div class="imagencont">
+                        <img id="aboutimg" src="/media-files/publico/Logo3.png" alt="..." loading="lazy" width="200" height="200">
+                        <h3 id="aboutT" class="card-title">Light ON</h3>
+                    </div>
+                    <div class="textcardcont">
+                        
+                        
+                        <div class="card-body">
+                            <p class="card-text">En Light ON suministramos productos eléctricos en media y baja tensión e iluminación, con soluciones acorde a las necesidades del mercado. Contamos con productos de alta calidad, somos distribuidores de las mejores marcas reconocidas del mercado. Somos la mejor solución en equipos eléctricos y de iluminación a lo largo y ancho de la República Mexicana.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+          </div>
+          <div class="mivi">
+            <div id="cards">
+
+                <div class="card">
+                    <div class="imagencont">
+                      <img src="/media-files/publico/mision.png" class="imgcards" alt="...">
+                    </div>
+                    <div class="textcardcont">
+                      <div class="card-body">
+                        <h5 class="card-title">MISION</h5>
+                        <p class="card-text">Cuidar y proponer medidas en el cuidado del medio ambiente asi como fortalecer el crecimiento de la empresa y el desarrollo profesional de sus empleados.</p>
+                      </div>
+                    </div>
+                </div>
+
+                <div class="card">
+
+                    <div class="textcardcont">
+                      <div class="card-body">
+                        <h5 class="card-title">VISION</h5>
+                        <p class="card-text">Ser el mayor proveedor de productos y soluciones eléctricas a nivel nacional e internacional. Ser reconocidos por la calidad humana y profesional de nuestros empleados, teniendo una conciencia ecológica en todos nuestros procesos.</p>
+                      </div>
+                    </div>
+                    <div class="imagencont">
+                      <img src="/media-files/publico/vision.png" class="imgcards" alt="...">
+                    </div>
+                </div>
+            </div>
+          </div>
+
+          <div class="mivi">
+            <!--<h1 class="proyectos-title">Proyectos Destacados</h1>
+            <div class="galeria">
+              {% for destacado in destacados %}
+              <div class="proyecto-card">
+                <img src="https://abvelectricsupply.com/media-files/{{ destacado.proyecto.proyecto_imagen.name }}"
+                     alt="{{ destacado.proyecto.proyecto_nombre }}"
+                     class="proyecto-img">
+                <div class="proyecto-body">
+                  <h2 class="proyecto-titulo">{{ destacado.proyecto.proyecto_nombre }}</h2>
+                  <p class="proyecto-descripcion">{{ destacado.proyecto.proyecto_descripcion_corta }}</p>
+                  <a href="{% url 'project' destacado.proyecto.id %}" class="proyecto-boton">Leer más →</a>
+                </div>
+              </div>
+              {% endfor %}
+            </div>-->
+            <!--
+            <div class="proyectos-ver-todos">
+              <a href="#" class="ver-todos-boton">Ver todos los proyectos</a>
+            </div>
+          </div>
+          -->
+
+
+
+          <div class="mivi">
+            <h1>Socios Comerciales</h1>
+            <div id="cards">
+                <div class="card">
+                    <div class="galeria">
+                      {% for marca in marcas %}
+                      <img src="https://abvelectricsupply.com/media-files/{{ marca.marca_url_img.name }}" alt="1">
+                      {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+      {% endblock %}

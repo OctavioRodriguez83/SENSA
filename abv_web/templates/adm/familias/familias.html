@@ -1,0 +1,351 @@
+{% extends "../nav/index.html" %} {% load static %}
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    {% block title %}Familias - ABV ELECTRIC SUPPLY{% endblock %}
+    {% block link_styles %}
+    <link
+      href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+    {% endblock %}
+  </head>
+  <body>
+    {% block cuerpo %}
+    <div class="container-fluid py-4">
+      <div class="card shadow-sm border-0">
+        <div class="card-header bg-light">
+          <h3 class="mb-0 text-center">Gestión de Familias</h3>
+        </div>
+        <div class="card-body bg-white">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <div class="btn-group btn-group-sm" role="group" aria-label="Filtros de estado">
+              <a href="{% url 'familias' %}?status=active"
+                 class="btn btn-outline-primary {% if filtro == 'active' %}active{% endif %}">
+                Activos
+              </a>
+              <a href="{% url 'familias' %}?status=inactive"
+                 class="btn btn-outline-primary {% if filtro == 'inactive' %}active{% endif %}">
+                No activos
+              </a>
+            </div>
+
+            <button type="button"
+                    class="btn btn-success fw-bold"
+                    data-bs-toggle="modal"
+                    data-bs-target="#modalAddFamilia">
+              <i class="fas fa-plus me-1"></i> Agregar
+            </button>
+          </div>
+
+          <div class="table-responsive">
+            <table
+              id="familiasTable"
+              class="table table-striped table-hover table-bordered align-middle"
+            >
+              <thead class="table-light">
+                <tr>
+                  <th>Familia</th>
+                  <th>Descripción</th>
+                  <th>Imagen</th>
+                  <th>Marca Asociada</th>
+                  <th class="text-center">Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for familia in familias %}
+                <tr
+                  class="clickable-row"
+                  style="cursor: pointer"
+                  data-name="{{ familia.familia_name|escapejs }}"
+                  data-desc="{{ familia.familia_descripcion|escapejs }}"
+                  data-img-url="{% if familia.familia_url_img %}/media-files/{{ familia.familia_url_img.name }}{% else %}{% static 'path/to/default/image.png' %}{% endif %}"
+                  data-edit-url="{% url 'editar_familia' familia.id %}"
+                  data-delete-url="{% url 'eliminar_familia' familia.id %}"
+                  data-marca-name="{% if familia.marca %}{{ familia.marca.marca_name|escapejs }}{% else %}Ninguna{% endif %}"
+                >
+                  <td>{{ familia.familia_name }}</td>
+                  <td>{{ familia.familia_descripcion }}</td>
+                  <td>
+                    {% if familia.familia_url_img %}
+                      <img src="/media-files/{{ familia.familia_url_img }}" alt="{{ familia.familia_name }}" class="img-thumbnail" style="width: 50px; height: 50px; object-fit: cover;">
+                    {% else %}
+                      No imagen
+                    {% endif %}
+                  </td>
+                  <td>
+                    {% if familia.marca %}
+                      <span class="badge bg-primary me-1">{{ familia.marca.marca_name }}</span>
+                    {% else %}
+                      Ninguna
+                    {% endif %}
+                  </td>
+                  <td class="text-center">
+                    {% if filtro == 'inactive' %}
+                      <a href="{% url 'restaurar_familia' familia.id %}"
+                          class="btn btn-sm btn-success"
+                          onclick="return confirm('¿Estás seguro de restaurar esta familia?')">
+                          Restaurar <i class="bi bi-arrow-clockwise"></i>
+                      </a>
+                    {% else %}
+                      <a href="{% url 'editar_familia' familia.id %}"
+                          class="btn btn-sm btn-warning me-1"
+                          onclick="event.stopPropagation()">
+                          Editar <i class="bi bi-pencil-fill"></i>
+                      </a>
+                      <a href="{% url 'eliminar_familia' familia.id %}"
+                          class="btn btn-sm btn-danger"
+                          onclick="event.stopPropagation()">
+                          Eliminar <i class="fas fa-trash-alt"></i>
+                      </a>
+                    {% endif %}
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="modal fade"
+      id="modalAddFamilia"
+      data-bs-backdrop="static"
+      data-bs-keyboard="false"
+      tabindex="-1"
+      aria-labelledby="modalAddFamiliaLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalAddFamiliaLabel">
+              Nueva Familia
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <form
+            action="{% url 'familias' %}"
+            method="POST"
+            enctype="multipart/form-data"
+          >
+            {% csrf_token %}
+            <div class="modal-body">
+              <div class="mb-3">
+                <label class="form-label">Nombre de la Familia</label>
+                {{ formF.familia_name }}
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Descripción</label>
+                {{ formF.familia_descripcion }}
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Selecciona imagen</label>
+                {{ formF.familia_url_img }}
+              </div>
+              {# Campo para la marca asociada (ForeignKey) #}
+              <div class="mb-3">
+                <label class="form-label">Marca Asociada</label>
+                {{ formF.marca }}
+                {% if formF.marca.help_text %}
+                    <div class="form-text">{{ formF.marca.help_text }}</div>
+                {% endif %}
+                {% for error in formF.marca.errors %}
+                    <div class="text-danger small">{{ error }}</div>
+                {% endfor %}
+              </div>
+              {# Campo para la categoría asociada (ForeignKey) #}
+              <div class="mb-3">
+                <label class="form-label">{{ formF.categoria.label }}</label>
+                {{ formF.categoria }}
+                {% if formF.categoria.help_text %}
+                  <div class="form-text">{{ formF.categoria.help_text }}</div>
+                {% endif %}
+                {% for error in formF.categoria.errors %}
+                  <div class="text-danger small">{{ error }}</div>
+                {% endfor %}
+              </div>
+              {# Campo para el estado (statusFamilia) #}
+              <div class="mb-3 form-check">
+                {{ formF.statusFamilia }}
+                <label class="form-check-label" for="{{ formF.statusFamilia.id_for_label }}">
+                  {{ formF.statusFamilia.label }}
+                </label>
+                {% for error in formF.statusFamilia.errors %}
+                    <div class="text-danger small">{{ error }}</div>
+                {% endfor %}
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Cancelar
+              </button>
+              <button type="submit" class="btn btn-primary">Guardar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="modal fade"
+      id="modalViewFamilia"
+      tabindex="-1"
+      aria-labelledby="modalViewFamiliaLabel"
+      aria-hidden="true"
+    >
+      <div
+        class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable"
+      >
+        <div class="modal-content border-0 rounded-4 shadow-lg">
+          <div class="modal-header bg-secondary bg-opacity-10 border-bottom-0">
+            <h5 class="modal-title fw-bold" id="modalViewFamiliaTitle"></h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Cerrar"
+            ></button>
+          </div>
+
+          <div class="modal-body p-4">
+            <div class="row g-4">
+              <div class="col-md-5 text-center">
+                <div class="card border-0">
+                  <img
+                    id="viewFamiliaImg"
+                    src=""
+                    alt=""
+                    class="img-fluid rounded-3 shadow-sm"
+                    style="max-height: 30rem; width: auto"
+                  />
+                  <figcaption class="mt-2 text-muted small"></figcaption>
+                </div>
+              </div>
+
+              <div class="col-md-7 d-flex flex-column justify-content-between">
+                <div>
+                  <h4
+                    class="fw-semibold mb-3"
+                    id="modalViewFamiliaLabel"
+                  ></h4>
+                  <p id="viewFamiliaDesc" class="fs-6 lh-base"></p>
+                  {# Nueva sección para mostrar la marca asociada #}
+                  <div class="mt-3">
+                    <h6 class="fw-semibold">Marca Asociada:</h6>
+                    <div id="viewFamiliaMarca" class="d-flex flex-wrap gap-2">
+                      {# La marca se insertará aquí con JavaScript #}
+                    </div>
+                  </div>
+                </div>
+
+                <div class="mt-4">
+                  <a
+                    id="viewEditBtn"
+                    href="#"
+                    class="btn btn-outline-warning me-2"
+                  >
+                    <i class="bi bi-pencil-fill"></i> Editar
+                  </a>
+                  <a
+                    id="viewDeleteBtn"
+                    href="#"
+                    class="btn btn-outline-danger me-2"
+                  >
+                    <i class="fas fa-trash-alt"></i> Eliminar
+                  </a>
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-bs-dismiss="modal"
+                  >
+                    Cerrar
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      $(function () {
+        const table = $("#familiasTable").DataTable({
+          language: {
+            search: "Buscar:",
+            lengthMenu: "Mostrar _MENU_ registros",
+            zeroRecords: "No se encontraron registros",
+            info: "Página _PAGE_ de _PAGES_",
+            infoEmpty: "Sin registros",
+            infoFiltered: "(filtrado de _MAX_ totales)",
+            paginate: {
+              first: "Primero",
+              last: "Último",
+              next: "Siguiente",
+              previous: "Anterior",
+            },
+          },
+          responsive: true,
+          autoWidth: false,
+          columnDefs: [
+            { targets: [0, 1, 2, 3], orderable: true },
+            { targets: [4], orderable: false }
+          ],
+        });
+
+        // Delegación de eventos para filas que muestran el modal de visualización
+        $("#familiasTable tbody").on("click", "tr.clickable-row", function () {
+          const name = $(this).data("name");
+          const desc = $(this).data("desc");
+          const imgUrl = $(this).data("img-url");
+          const editUrl = $(this).data("edit-url");
+          const deleteUrl = $(this).data("delete-url");
+          const marcaName = $(this).data("marca-name");
+
+          $("#modalViewFamiliaTitle").text(name);
+          $("#modalViewFamiliaLabel").text(name);
+          $("#viewFamiliaDesc").text(desc);
+          $("#viewFamiliaImg").attr({ src: imgUrl, alt: name });
+          $("#viewEditBtn").attr("href", editUrl);
+          $("#viewDeleteBtn").attr("href", deleteUrl);
+          $("#viewFamiliaImg").siblings("figcaption").text("Vista previa de " + name);
+
+          // Mostrar la marca en el modal
+          const marcaContainer = $("#viewFamiliaMarca");
+          marcaContainer.empty();
+          if (marcaName && marcaName !== 'Ninguna') {
+            marcaContainer.append('<span class="badge bg-primary me-1">' + marcaName + '</span>');
+          } else {
+            marcaContainer.append('<span class="text-muted">Ninguna</span>');
+          }
+
+          new bootstrap.Modal($("#modalViewFamilia")).show();
+        });
+
+        // Delegación de eventos para el botón de eliminar
+        $("#familiasTable tbody").on("click", ".btn-danger", function (e) {
+          e.stopPropagation();
+          // Opcional: confirmar antes de eliminar.
+          if (confirm("¿Estás seguro de eliminar la familia?")) {
+            window.location.href = $(this).attr("href");
+          }
+        });
+      });
+    </script>
+    {% endblock %}
+  </body>
+</html>

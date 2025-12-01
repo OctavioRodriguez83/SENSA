@@ -1,0 +1,93 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio de sesión - SB Admin</title>
+        <link rel="icon" type="image/svg+xml" href="{% static 'favicon.svg' %}" />
+
+    <!-- MDB Bootstrap CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.0/mdb.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(120deg, #f6f7f9, #eef1f5);
+            min-height: 100vh;
+        }
+
+        .login-container {
+            max-width: 1200px;
+            width: 90%;
+        }
+
+        .login-card {
+            border-radius: 1.5rem;
+            box-shadow: 0 10px 35px rgba(0,0,0,0.15);
+            border: none;
+        }
+
+        .login-image {
+            height: 100%;
+            object-fit: cover;
+            padding: 2rem;
+        }
+
+        .form-control {
+            padding: 1rem 1.5rem;
+            font-size: 1.1rem;
+        }
+
+        .btn-login {
+            font-size: 1.1rem;
+            padding: 0.8rem;
+            letter-spacing: 0.05rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container min-vh-100 d-flex align-items-center justify-content-center">
+        <div class="login-container">
+            <div class="login-card">
+                <div class="row g-0">
+                    <!-- Columna de la imagen -->
+                    <div class="col-lg-5 d-none d-lg-block bg-light">
+                        <img src="{% static 'adm/img/login/abv.svg' %}" alt="Logo ABV"
+                             class="login-image w-100">
+                    </div>
+
+                    <!-- Columna del formulario -->
+                    <div class="col-lg-7 p-5">
+                        <div class="h-100 d-flex flex-column justify-content-center">
+                            <h2 class="text-center mb-4 fw-bold text-primary">Bienvenido</h2>
+
+                           <form action="{% url 'login' %}" method="POST">
+                                {% csrf_token %}
+                                <div data-mdb-input-init class="form-outline mb-4">
+                                    <input type="email" id="email" name="email" class="form-control" required placeholder="Ingresa tu correo">
+                                    <label class="form-label" for="email">Correo</label>
+                                </div>
+                                <div data-mdb-input-init class="form-outline mb-4">
+                                    <input type="password" id="contrasena" name="password" class="form-control" required placeholder="Ingresa tu contraseña">
+                                    <label class="form-label" for="contrasena">Contraseña</label>
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-login btn-block w-100 mb-4">Iniciar sesión</button>
+                            </form>
+
+                            <!-- Pie de página -->
+                            <div class="text-center mt-4">
+                                <p class="text-muted mb-0">¿No tienes cuenta?</p>
+                                <a href="#!" class="text-decoration-none fw-bold">
+                                    Contácta al administrador
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MDB Bootstrap JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.0/mdb.min.js"></script>
+</body>
+</html>

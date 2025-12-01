@@ -1,0 +1,70 @@
+{% extends "../nav/index.html" %}
+{% load static %}
+
+{% block link_styles %}
+  <link href="{% static 'publico/css/familias/familiasespecificostyles.css' %}" rel="stylesheet" />
+{% endblock %}
+
+{% block cuerpo %}
+  <div class="mivi">
+                    
+                    <div id="cards">
+                        <h1>Familia {{ familia.0.familia_name }} </h1>
+                        <div class="card-perso">
+                            <div class="familiaDetalles">
+                                <div class="familiaImagen">
+                                    <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
+                                        <div class="carousel-inner">
+                                            <div class="carousel-item active">
+                                                {% if familia.0.familia_url_img %}
+                                                    <img class="carousel-imgc2 d-block w-100" src="/media-files/{{ familia.0.familia_url_img }}" alt="{{ familia.0.familia_name }}" class="d-block w-100">
+                                                {% else %}
+                                                    <img class="carousel-imgc2 d-block w-100" src="{% static 'publico/img/default-category.jpg' %}" alt="Sin imagen" class="d-block w-100">
+                                                {% endif %}
+                                            </div>
+                                            {%if imgsS.count > 0 %}
+                                                {%for img in imgsS %}
+                                                    <div class="carousel-item">
+                                                        <img class="carousel-imgc2 d-block w-100" src="/media-files/{{ img.imagen_secundaria }}" class="d-block w-100" alt="{{ familia.0.familia_name }}">
+                                                    </div>                    
+                                                {% endfor %}
+                                            {% endif %} 
+                                            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
+                                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                                <span class="visually-hidden">Previous</span>
+                                            </button>
+                                            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
+                                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                                <span class="visually-hidden">Next</span>
+                                            </button>
+                                        </div>
+                                        
+                                    </div>
+                                    
+                                </div>
+                                <div class="familiaInfo">
+                                    <h2>Descripción de la Familia</h2>
+                                    <p>{{ familia.0.familia_descripcion }}</p>
+                                </div>
+                            </div>
+
+                            <h1>Productos </h1>
+                            <div class="store-products">    
+                            {%for p in productos%}
+                                <div class="card-item">
+                                    {% if p.producto_url_img %}
+                                        <img src="/media-files/{{ p.producto_url_img }}" alt="{{ p.producto_nombre }}">
+                                    {% else %}
+                                        <img src="{% static 'publico/img/default-product.jpg' %}" alt="Sin imagen">
+                                    {% endif %}
+                                    <h3>{{ p.producto_name }}</h3>
+                                    <p>SKU: {{ p.producto_sku }}</p>
+                                    <p>Precio: ${{ p.producto_precio_base }}</p>
+                                    <a href="{% url 'product' p.producto_sku %}" class="btn">Ver Detalles</a>
+                                </div>
+                            {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+  </div>  
+{% endblock %}

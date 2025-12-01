@@ -1,0 +1,15 @@
+<ul class="list-group shadow rounded">
+  {% for producto in productos %}
+    <li class="list-group-item list-group-item-action px-3">
+      <a href="{% url 'product' producto.producto_sku %}" class="text-dark text-decoration-none d-flex align-items-center">
+        <img src="/media-files/{{ producto.producto_url_img }}" alt="{{ producto.producto_nombre }}" class="img-thumbnail me-2" style="width:40px;height:40px;">
+        <span>{{ producto.producto_nombre }}</span>
+      </a>
+    </li>
+  {% endfor %}
+  <li class="list-group-item text-center">
+    <button onclick="window.location.href='/products/?search=' + encodeURIComponent(document.getElementById('navbar-search').value)" class="btn btn-primary">
+      Ver resultados de búsqueda
+    </button>
+  </li>
+</ul>

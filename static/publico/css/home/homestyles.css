@@ -1,0 +1,1100 @@
+.categorias-header {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+  width: 100%;
+  margin-bottom: 0.5rem;
+  position: relative;
+  z-index: 2;
+}
+
+.btn-inventario {
+  background: #28a745; /* Cambia el color de fondo aquí */
+  color: #fff;         /* Cambia el color del texto aquí */
+  font-weight: 700;
+  padding: 0.6em 1.5em;
+  border-radius: 0.7em;
+  border: none;
+  text-decoration: none;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.1rem;
+  box-shadow: 0 2px 8px rgba(40,167,69,0.08);
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+  margin-top: 0.5rem;
+  margin-right: 1rem;
+  text-align: center;
+}
+
+.btn-inventario:hover {
+  background: #218838;
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(40,167,69,0.15);
+}
+
+/* Estilos para el contenedor del carrusel de Swiper */
+.mySwiper-productos {
+  width: 100%; /* O el ancho que desees para el carrusel completo */
+  height: 50vh; /* O un alto fijo, por ejemplo, 400px */
+  padding-top: 50px; /* Espacio para que el carrusel no esté pegado al borde */
+  padding-bottom: 50px;
+}
+
+/* Estilos para cada diapositiva (swiper-slide) */
+.mySwiper-productos .swiper-slide {
+  background-position: center;
+  background-size: cover;
+  width: 33.33%; /* Ancho fijo para cada diapositiva */
+  height: auto; /* Alto fijo para cada diapositiva */
+  -webkit-box-reflect: below 1px linear-gradient(transparent, transparent, #000000);
+}
+
+/* Estilos para las imágenes dentro de las diapositivas */
+.mySwiper-productos .swiper-slide img {
+  display: block;
+  width: 100%; /* La imagen ocupa todo el ancho de la diapositiva */
+  height: 100%; /* La imagen ocupa todo el alto de la diapositiva */
+  object-fit: cover; /* Para que la imagen cubra el contenedor sin distorsionarse */
+}
+
+/* Ajustes para el efecto de portada (coverflow) */
+.mySwiper-productos .swiper-slide-shadow-left,
+.mySwiper-productos .swiper-slide-shadow-right {
+  background-image: none;
+}
+
+/* Estilos para las diapositivas del carrusel de productos */
+.mySwiper-productos .swiper-slide:not(.swiper-slide-active) {
+  opacity: 0.2; /* Ajusta este valor (entre 0 y 1) para controlar el difuminado */
+  transition: opacity 1s ease; /* Transición suave para el efecto de difuminado */
+}
+
+
+
+
+.announcement-bar {
+  display: flex;
+  background-color: #001F3F;
+  padding: 0; /* Asegura que no haya padding en la barra principal 
+  position: fixed;*/
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 70px; /* Ajusta según tu necesidad */
+  line-height: 0; /* Colapsa espacio vertical de texto si lo hubiera */
+  font-size: 0; /* ELIMINA ESPACIOS ENTRE INLINE-BLOCKS */
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+.filtro-especifico {
+  filter: grayscale(100%) brightness(2) sepia(100%);
+}
+
+.announcements-wrapper {
+  display: inline-block;
+  white-space: nowrap;
+  /*animation: scrollAnunciosCiclico 35s linear infinite;*/
+  font-size: 0; /* ELIMINA ESPACIOS ENTRE INLINE-BLOCKS (para los 'a' hijos) */
+  margin: 0; /* Asegura que no haya márgenes en el wrapper */
+  padding: 0; /* Asegura que no haya rellenos en el wrapper */
+}
+
+.announcements-wrapper a {
+  display: inline-block;
+  vertical-align: middle;
+  margin: 0; /* **CRÍTICO**: Cero margen en los enlaces */
+  padding: 0 15px; /* Usa padding para el espaciado horizontal */
+  text-decoration: none;
+  font-size: 1rem; /* Restablece el tamaño de la fuente para accesibilidad */
+  line-height: normal; /* Restablece la altura de línea */
+}
+
+.announcements-wrapper img {
+  display: block; /* Elimina espacio extra */
+  min-height: 40px;
+  max-height: 40px; /* Controla la altura de las imágenes */
+  width: auto; /* Mantiene la proporción */
+  object-fit: contain;
+  border: none;
+}
+
+@keyframes scrollAnunciosCiclico {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    /* Mantiene -50%. Si con HTML limpio y los paddings sigue fallando,
+       el problema es más complejo y podría requerir JS. */
+    transform: translateX(-50%);
+  }
+}
+
+/* --- SECCIÓN: ESTRUCTURA PRINCIPAL DEL HEADER Y CARRUSELES --- */
+
+#elemcarrusel {
+    display: flex;
+    flex-direction: row;
+    /* background-color: red; /* Color temporal para depuración, puedes eliminarlo */
+    width: 100%;
+    height: calc(70vh - 5.5rem);
+    /* Añade padding a elemcarrusel si quieres que todos los carruseles tengan un margen alrededor */
+ /* Ajusta este valor si quieres un espacio alrededor de todo el grupo de carruseles */
+    box-sizing: border-box; /* Asegura que el padding se incluya en el tamaño de elemcarrusel */
+}
+
+#carrprincipal {
+    background-color: white; /* Color temporal para depuración, puedes eliminarlo */
+    width: 100%;
+    height: 100%;
+    /* Estilos para que parezca una card */
+    
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra para profundidad */
+    box-sizing: border-box; /* Fundamental para que el borde y padding no desborden */
+     /* Margen para separarlo de la columna de carruseles secundarios */
+    overflow: hidden; /* Asegura que el contenido (imágenes) respete el border-radius */
+}
+
+#carrsecun {
+    display: flex;
+    flex-direction: column;
+    /* background-color: green; /* Color temporal para depuración, puedes eliminarlo */
+    width: 30%;
+    height: 100%;
+    /* No necesitamos padding aquí si ya lo aplicamos a #elemcarrusel o si #carruS y #carruI tienen margen.
+       Si quieres un espacio solo entre #carrsecun y #carrprincipal, el margin-right en #carrprincipal es mejor.
+       Si #carruS y #carruI tienen margin, el padding aquí sería redundante o causaría doble espacio. */
+    /* padding: 10px; */
+    /* box-sizing: border-box; */
+}
+
+#carruS {
+    /*background-color: white;  Color temporal para depuración, puedes eliminarlo */
+    width: 90%;
+    height: 50%;
+    /* Estilos para que parezca una card */
+    /* border: 1px solid #e0e0e0; /* Borde más sutil */
+    /* border-radius: 10px; Esquinas redondeadas */
+    /*box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra para profundidad */
+    box-sizing: border-box; /* Fundamental para que el borde y padding no desborden */
+    margin-bottom: 10px;
+    margin-top: 10px; /* Margen para separarlo del carrusel inferior */
+    padding: 1%;
+    overflow: hidden; /* Asegura que el contenido (imágenes) respete el border-radius */
+}
+
+#carruI {
+    background-color: white; /* Color temporal para depuración, puedes eliminarlo */
+    width: 100%;
+    height: 50%;
+    /* Estilos para que parezca una card */
+    border: 1px solid #e0e0e0; /* Borde más sutil */
+    border-radius: 10px; /* Esquinas redondeadas */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra para profundidad */
+    box-sizing: border-box; /* Fundamental para que el borde y padding no desborden */
+    margin-top: 10px; /* Margen para separarlo del carrusel superior */
+    overflow: hidden; /* Asegura que el contenido (imágenes) respete el border-radius */
+}
+
+@media (max-width: 900px) {
+
+    #elemcarrusel {
+        display: flex;
+        flex-direction: column;
+        /* background-color: red; /* Color temporal para depuración, puedes eliminarlo */
+        width: 100%;
+        height: calc(70vh - 5.5rem);
+        /* Añade padding a elemcarrusel si quieres que todos los carruseles tengan un margen alrededor */
+        padding: 10px; /* Ajusta este valor si quieres un espacio alrededor de todo el grupo de carruseles */
+        box-sizing: border-box; /* Asegura que el padding se incluya en el tamaño de elemcarrusel */
+    }
+    #carrprincipal {
+        background-color: white; /* Color temporal para depuración, puedes eliminarlo */
+        width: 100%;
+        height: 100%;
+        /* Estilos para que parezca una card */
+        border: 1px solid #e0e0e0; /* Borde sutil */
+        border-radius: 10px; /* Esquinas redondeadas */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra para profundidad */
+        box-sizing: border-box; /* Fundamental para que el borde y padding no desborden */
+        margin-right: 10px; /* Margen para separarlo de la columna de carruseles secundarios */
+        overflow: hidden; /* Asegura que el contenido (imágenes) respete el border-radius */
+    }
+
+    #carrsecun {
+        display: flex;
+        flex-direction: row;
+        /* background-color: green; /* Color temporal para depuración, puedes eliminarlo */
+        width: 100%;
+        height: 30%;
+        /* No necesitamos padding aquí si ya lo aplicamos a #elemcarrusel o si #carruS y #carruI tienen margen.
+           Si quieres un espacio solo entre #carrsecun y #carrprincipal, el margin-right en #carrprincipal es mejor.
+           Si #carruS y #carruI tienen margin, el padding aquí sería redundante o causaría doble espacio. */
+        /* padding: 10px; */
+        /* box-sizing: border-box; */
+    }
+    
+
+    #carruI {
+        background-color: white; /* Color temporal para depuración, puedes eliminarlo */
+        width: 50%;
+        height: 100%;
+        /* Estilos para que parezca una card */
+        border: 1px solid #e0e0e0; /* Borde más sutil */
+        border-radius: 10px; /* Esquinas redondeadas */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra para profundidad */
+        box-sizing: border-box; /* Fundamental para que el borde y padding no desborden */
+        margin-top: 10px; /* Margen para separarlo del carrusel superior */
+        overflow: hidden; /* Asegura que el contenido (imágenes) respete el border-radius */
+    }
+}
+
+
+/* --- FIN SECCIÓN: ESTRUCTURA PRINCIPAL DEL HEADER Y CARRUSELES --- */
+
+
+
+/* --- SECCIÓN: ESTILOS GENERALES DE CARRUSELES (BOOTSTRAP OVERRIDES) --- */
+
+.carousel-item {
+    width: 100%;
+    height: calc(70vh - 5.5rem); /* Altura del item para el carrusel principal */
+}
+
+/* Sobreescribimos la altura para los carruseles secundarios */
+#carruS .carousel-item,
+#carruI .carousel-item {
+    height: calc(50vh - 2.75rem); /* Altura del item para los carruseles secundarios */
+}
+
+/* Estilos para las imágenes dentro de los carruseles */
+.carousel-imgc1,
+.carousel-imgc2 {
+    width: 100%;
+    height: 100%; /* La imagen ocupará el 100% de la altura de su contenedor (.carousel-item) */
+    object-fit: contain; /* ¡Clave! La imagen se ajustará al contenedor sin cortarse ni distorsionarse */
+    display: block; /* Asegura que la imagen se comporte como un bloque */
+    margin: 0 auto; /* Centra la imagen horizontalmente si hay espacio extra */
+}
+.carousel-imgc1-2 {
+    width: 100%;
+    height: 100%; /* La imagen ocupará el 100% de la altura de su contenedor (.carousel-item) */
+    object-fit: cover; /* ¡Clave! La imagen se ajustará al contenedor sin cortarse ni distorsionarse */
+    display: block; /* Asegura que la imagen se comporte como un bloque */
+    margin: 0 auto; /* Centra la imagen horizontalmente si hay espacio extra */
+}
+
+/* Asegurar que las leyendas y su contenido se centren dentro de sus propios contenedores si es necesario */
+.carousel-caption {
+    /* Propiedades generales para todas las leyendas de los carruseles */
+    top: 10%; /* Posición vertical de la leyenda */
+    color: white;
+    text-shadow: 1px 1px 2px black;
+    -webkit-text-stroke: 0.1px black; /* Borde sutil al texto */
+    width: 100%; /* Ancho de la caja de la leyenda */
+    max-width: 600px; /* Ancho máximo para pantallas grandes */
+    padding: 1rem; /* Relleno interno de la caja de la leyenda */
+    left: auto; /* Reseteo de propiedades de posicionamiento */
+    right: auto; /* Reseteo de propiedades de posicionamiento */
+    transform: none; /* Asegura que no hay transformaciones que interfieran */
+    /* Agregar flexbox para centrar contenido verticalmente dentro del caption si es necesario */
+    display: flex; /* Añadido para centrar el contenido del caption */
+    flex-direction: column; /* Apila el contenido del caption */
+    align-items: flex-start; /* Alinea a la izquierda por defecto */
+     /* Centra verticalmente el contenido del caption */
+}
+
+/* Leyendas del carrusel alineadas a la izquierda */
+.carousel-caption.caption-left {
+    left: 10%; /* Posiciona la caja a 10% del borde izquierdo */
+    right: auto; /* Asegura que 'right' no interfiera */
+    align-items: flex-start; /* Alinea el contenido a la izquierda */
+}
+.INF{
+    justify-content: end;
+}
+
+/* Leyendas del carrusel alineadas a la derecha */
+.carousel-caption.caption-right {
+    left: auto; /* Asegura que 'left' no interfiera */
+    right: 10%; /* Posiciona la caja a 10% del borde derecho */
+    align-items: flex-end; /* Alinea el contenido a la derecha */
+}
+/* Alineación de contenido específico dentro de leyendas izquierdas */
+.carousel-caption.caption-left .imgpost,
+.carousel-caption.caption-left h1,
+.carousel-caption.caption-left p {
+    text-align: left;
+}
+
+/* Alineación de contenido específico dentro de leyendas derechas */
+.carousel-caption.caption-right .imgpost,
+.carousel-caption.caption-right h1,
+.carousel-caption.caption-right p {
+    text-align: right;
+}
+
+/* Estilos para la imagen del post dentro de la leyenda del carrusel */
+.carousel-caption .imgpost {
+    width: 25%;
+    height: auto;
+    /*border-radius: 50%;  Hace la imagen circular */
+    object-fit: cover;
+    margin-bottom: 15px;
+    display: block;
+}
+
+/* Ajuste de margen para imagen en leyenda derecha */
+.carousel-caption.caption-right .imgpost {
+    margin-left: auto; /* Empuja la imagen a la derecha */
+    margin-right: 0;
+}
+
+/* Ajuste de margen para imagen en leyenda izquierda */
+.carousel-caption.caption-left .imgpost {
+    margin-right: auto; /* Empuja la imagen a la izquierda */
+    margin-left: 0;
+}
+
+/* Tamaño de fuente para títulos en leyendas */
+.carousel-caption h1 {
+    font-size: 3vw;
+}
+
+/* Tamaño de fuente para párrafos en leyendas */
+.carousel-caption p {
+    font-size: 2vw;
+}
+
+@media (max-width: 900px) {
+    .carousel-item {
+        width: 100%;
+        /* Revertimos flexbox aquí. Bootstrap ya maneja el posicionamiento absoluto para la transición. */
+        /* display: flex; */
+        /* align-items: center; */
+        /* justify-content: center; */
+
+        /* La altura debe ser consistente para todos los items dentro del carrusel principal */
+        height: calc(70vh - 5.5rem); /* Altura del item para el carrusel principal */
+    }
+
+    /* Sobreescribimos la altura para los carruseles secundarios */
+    #carruS .carousel-item,
+    #carruI .carousel-item {
+        height: calc(30vh - 0.7rem); /* Altura del item para los carruseles secundarios */
+    }
+    /* Tamaño de fuente para títulos en leyendas */
+    .carousel-caption h1 {
+        font-size: 5vw;
+    }
+
+    /* Tamaño de fuente para párrafos en leyendas */
+    .carousel-caption p {
+        font-size: 4vw;
+    }
+
+}
+
+/* --- FIN SECCIÓN: ESTILOS GENERALES DE CARRUSELES --- */
+
+
+/* --- SECCIÓN: GALERÍA DE SOCIOS COMERCIALES --- */
+
+.cateenlace {
+    text-decoration: none;
+    color: black;
+    font-size: 1.5vw;
+    font-weight: bold; /* Mueve el font-weight aquí ya que el span ahora está dentro */
+
+    /* ¡CLAVE!: Convertir el enlace en un contenedor flex para centrar su contenido */
+    display: flex;
+    flex-direction: column; /* Apila la imagen y el texto verticalmente */
+    align-items: center; /* Centra la imagen y el texto horizontalmente */
+    justify-content: center; /* Centra verticalmente si hay espacio */
+    width: 100%; /* Ocupa todo el ancho de su padre (.contcate) */
+    height: 100%; /* Ocupa toda la altura de su padre (.contcate) */
+    padding: 10px; /* Añade padding interno para que el contenido no toque los bordes */
+    box-sizing: border-box; /* Incluye el padding en el tamaño */
+}
+.imgcateg{
+    width: 80%;
+    height: 13vw;
+    /* Asegúrate de que las imágenes dentro de imgcateg también estén centradas si aplica */
+    display: flex; /* Para centrar contenido dentro de imgcateg si lo tiene */
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px; /* Espacio entre la imagen y el texto */
+}
+.contcate {
+    /* Mantenemos el contcate como un contenedor para cada item */
+    /* Lo esencial es su ancho para el diseño de columnas */
+    width: calc(25% - 16px); /* 4 columnas, ajusta el 16px según el gap */
+    /* Eliminar display: block; y text-align: center; de aquí si están */
+    /* Altura automática para que se ajuste al contenido */
+    height: auto;
+    border-radius: 10px;
+    margin-bottom: 1%; /* Mantenemos el margen inferior */
+    /* Puedes añadir box-shadow o border aquí si quieres que cada .contcate sea la "card" visual */
+    /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
+    /* background-color: #fff; */
+    overflow: hidden; /* Asegura que el contenido no se salga del radio del borde */
+}
+
+.imgcateg {
+    /* La altura debe ser para la imagen dentro, no para este div */
+    width: 80%; /* Ancho relativo al .cateenlace */
+    /* border: solid 12px;  No es ideal para la imagen, quizá para el contcate */
+    /* height: 15vw;  Esto lo manejará la imagen directamente */
+    margin-bottom: 10px; /* Espacio entre la imagen y el texto */
+    display: flex; /* Flexbox para centrar la imagen dentro de imgcateg */
+    justify-content: center;
+    align-items: center;
+    overflow: hidden; /* Oculta cualquier parte de la imagen que se desborde */
+    /* Podrías darle un border-radius o un aspecto de contenedor a la imagen aquí */
+    border-radius: 8px; /* Pequeño radio a la caja de la imagen */
+    aspect-ratio: 1 / 1; /* Mantiene la proporción 1:1 */
+}
+
+.imgcateg img {
+    width: 100%;
+    height: 100%; /* La imagen ocupará todo el espacio de imgcateg */
+    object-fit: contain; /* Recorta la imagen para que cubra el espacio sin distorsionarse */
+    border-radius: 8px; /* Redondea la imagen dentro de la caja */
+}
+
+/* El span no necesita estilos especiales de alineación si el padre (.cateenlace) ya es flex column y align-items: center */
+.cateenlace span {
+    text-align: center; /* Asegura que el texto dentro del span esté centrado */
+    display: block; /* Para que text-align funcione correctamente en algunos navegadores */
+    margin-top: auto; /* Empuja el span hacia abajo si hay espacio extra */
+}
+
+.galeria2 {
+    display: flex;
+    width: 100%;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 16px;
+}
+.galeria {
+    display: flex;
+    width: 100%;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 16px; /* Espacio entre las imágenes de la galería */
+}
+
+.galeria img {
+    width: auto; /* Se ajusta automáticamente al contenido y responsive */
+    height: 15vh; /* Altura fija relativa al viewport */
+    border-radius: 10px;
+    display: block;
+}
+
+/* Responsive para tabletas (3 columnas) */
+@media (max-width: 992px) {
+    .galeria a {
+        width: calc(33.33% - 16px);
+    }
+    .galeria img {
+        width: calc(100%);
+    }
+
+    .cateenlace{
+        text-decoration: none;
+        color: black;
+        font-size: 2.5vw;
+    }
+    .contcate{
+        width: calc(33.33% - 16px) ; /* Se ajusta automáticamente al contenido y responsive */
+        height: auto; /* Altura fija relativa al viewport */
+        border-radius: 10px;
+        display: block;
+        text-align: center;
+    }
+}
+
+/* Responsive para móviles (2 columnas) */
+@media (max-width: 768px) {
+    .galeria a {
+        width: calc(50% - 16px);
+    }
+    .galeria img {
+        width: calc(100%);
+    }
+    .cateenlace{
+        text-decoration: none;
+        color: black;
+        font-size: 2.5vw;
+    }
+    .contcate{
+        width: calc(50% - 16px) ; /* Se ajusta automáticamente al contenido y responsive */
+        height: auto; /* Altura fija relativa al viewport */
+        border-radius: 10px;
+        display: block;
+        text-align: center;
+    }
+}
+
+/* Responsive para extra pequeños (1 columna) */
+@media (max-width: 480px) {
+    .galeria a {
+        width: 100%;
+    }
+    .galeria img {
+        width: 100%;
+    }
+    .cateenlace{
+        text-decoration: none;
+        color: black;
+        font-size: 3.5vw;
+    }
+    .contcate{
+        width: 100% ; /* Se ajusta automáticamente al contenido y responsive */
+        height: auto; /* Altura fija relativa al viewport */
+        border-radius: 10px;
+        display: block;
+        text-align: center;
+    }
+    .mySwiper-productos {
+      width: 100%; /* O el ancho que desees para el carrusel completo */
+      height: 30vh; /* O un alto fijo, por ejemplo, 400px */
+      padding-top: 50px; /* Espacio para que el carrusel no esté pegado al borde */
+      padding-bottom: 50px;
+    }
+}
+
+
+
+/* --- FIN SECCIÓN: GALERÍA DE SOCIOS COMERCIALES --- */
+
+
+/* --- SECCIÓN: ESTILOS GENERALES DE TARJETAS (SOBRE NOSOTROS, SERVICIOS) --- */
+
+#aboutimg {
+    min-width: 15vw;
+    width: 15vw;
+    min-height: 15vw;
+    height: 15vw;
+    /*border-radius: 50%;  Hace la imagen circular */
+    object-fit: contain;
+    margin-bottom: 15px;
+
+}
+
+#cards {
+    width: 90%;
+    justify-content: center;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+#cards2 {
+    width: 100%;
+    justify-content: center;
+    display: flex;
+    flex-wrap: wrap;
+    background-color: #fff;
+}
+.card2 {
+    margin-top: 1%;
+    margin-bottom: 1%;
+    padding: 3%;
+    display: flex;
+    height: auto;
+    flex-direction: row; /* Las tarjetas se muestran en fila */
+    justify-content: center;
+    background-color: #fff;
+    width:  100%;
+}
+.card {
+    margin-top: 1%;
+    margin-bottom: 1%;
+    padding: 3%;
+    display: flex;
+    height: auto;
+    flex-direction: row; /* Las tarjetas se muestran en fila */
+    justify-content: center;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Sombra para las tarjetas */
+    border-radius: 16px;
+    background-color: #fff;
+    width:  100%;
+}
+
+.imagencont {
+    display: flex;
+    width: 50%;
+    height: auto;
+    justify-content: center;
+    align-items: center;
+    text-align: justify;
+    flex-direction: column;
+}
+
+
+.textcardcont {
+    display: flex;
+    width: 50%;
+    height: auto;
+    justify-content: center;
+    align-items: center;
+    text-align: justify;
+    flex-direction: column;
+}
+
+.textcardcont .card-body{
+   display: flex;
+    width: 100%;
+    height: auto;
+    justify-content: center;
+    align-items: center;
+    text-align: justify;
+    flex-direction: column;
+}
+
+.imgcards {
+    height: 25vh;
+    width: auto;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+
+@media (max-width: 900px) {
+    .card {
+        margin-top: 1%;
+        margin-bottom: 1%;
+        padding: 3%;
+        display: flex;
+        height: auto;
+        flex-direction: column; /* Las tarjetas se muestran en fila */
+        justify-content: center;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Sombra para las tarjetas */
+        border-radius: 16px;
+        background-color: #fff;
+    }
+    
+    .imagencont {
+        display: flex;
+        width: 100%;
+        height: auto;
+        justify-content: center;
+        align-items: center;
+        padding-right: 1.5%;
+        overflow: hidden;
+    }
+    .textcardcont {
+        display: flex;
+        width: 100%;
+        height: auto;
+        justify-content: center;
+        align-items: center;
+        text-align: justify;
+        flex-direction: column;
+    }
+
+}
+
+@media (max-width: 768px) {
+    .card2 {
+        margin-top: 1%;
+        margin-bottom: 1%;
+        padding: 3%;
+        display: flex;
+        height: auto;
+        flex-direction: column; /* Las tarjetas se muestran en fila */
+        justify-content: center;
+        background-color: #fff;
+        width:  100%;
+    }
+}
+
+/* Responsive para extra pequeños (1 columna) */
+@media (max-width: 480px) {
+    .card2 {
+        margin-top: 1%;
+        margin-bottom: 1%;
+        padding: 3%;
+        display: flex;
+        height: auto;
+        flex-direction: column; /* Las tarjetas se muestran en fila */
+        justify-content: center;
+        background-color: #fff;
+        width:  100%;
+    }
+}
+
+/* --- FIN SECCIÓN: ESTILOS GENERALES DE TARJETAS --- */
+
+.store-search {
+  display: flex;
+  width: 100%;
+  max-width: 800px;
+  margin-bottom: 2rem;
+}
+
+.store-search input {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 0.5rem 0 0 0.5rem;
+  outline: none;
+}
+
+.store-search button {
+  background: #1E1E1E;
+  color: #fff;
+  border: none;
+  padding: 0 1rem;
+  font-size: 1.25rem;
+  border-radius: 0 0.5rem 0.5rem 0;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.store-search button:hover {
+  background: #333;
+}
+
+/* Layout principal */
+.store-layout {
+  display: flex;
+  width: 100%;
+  gap: 2rem;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+/* Contenedor principal de la tienda */
+.store-container {
+  width: 90%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2.5rem 2rem;
+  box-sizing: border-box;
+}
+
+.store-products {
+  min-height: 600px; /* Mantiene altura consistente */
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2.5rem 2rem;
+  padding: 1.5rem 0;
+  justify-items: center;
+}
+
+/* Producto */
+.product-card {
+  min-width: 220px;
+  max-width: 260px;
+  min-height: 340px;
+  background: #fff;
+  border-radius: 0.75rem;
+  box-shadow: 0 0.25rem 1rem rgba(0,0,0,0.1);
+    padding: 2rem 1.5rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s, box-shadow 0.2s;
+  margin-bottom: 1.5rem;
+}
+
+.product-card:hover {
+  transform: translateY(-0.25rem);
+  box-shadow: 0 0.375rem 1.25rem rgba(0,0,0,0.15);
+}
+
+.product-card img {
+  width: 100%;
+  height: 10rem;
+  object-fit: cover;
+  border-radius: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+/* Detalle del producto */
+.pc-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin: 0.75rem 0 0.5rem;
+  line-height: 1.2;
+}
+
+.pc-price {
+  font-size: 1.125rem;
+  font-weight: 800;
+  color: #1E1E1E;
+  margin: 0 0 0.75rem;
+  border-top: 1px solid #eee;
+  padding-top: 0.5rem;
+}
+
+.pc-desc {
+  font-size: 0.875rem;
+  color: #555;
+  flex-grow: 1;
+  margin-bottom: 0.75rem;
+}
+
+.pc-available {
+  font-size: 0.85rem;
+  color: #333;
+  font-weight: 400;
+  margin-bottom: 1rem;
+  line-height: 1.5;
+}
+
+.pc-icons {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+}
+
+.pc-icons img,
+.pc-icons .bi {
+  width: 1.5rem;
+  height: 1.5rem;
+  object-fit: contain;
+  opacity: 0.8;
+  transition: opacity 0.2s;
+}
+
+.pc-icons img {
+  width: 2rem;
+  height: 2rem;
+  margin-right: 0.5rem;
+  object-fit: contain;
+  gap: 0.75rem;
+}
+
+.pc-icons .bi {
+  font-size: 2rem;
+  margin-right: 0.5rem;
+  vertical-align: middle;
+}
+
+.pc-icons img:hover,
+.pc-icons .bi:hover {
+  opacity: 0.9;
+}
+
+.pc-available {
+  font-weight: 600;
+  margin-bottom: 1rem;
+  border-top: 1px dashed #ddd;
+  padding-top: 0.75rem;
+}
+
+
+
+.btn-detalle {
+  font-weight: 600;
+  padding: 0.6rem 0.9rem;
+  margin-top: auto;
+  align-self: start;
+  background: #1E1E1E;
+  color: #fff;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  text-decoration: none;
+  font-size: 0.875rem;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.btn-detalle:hover {
+  background: #333;
+  transform: translateY(-0.1rem);
+}
+
+/* Panel de filtros */
+.store-filters {
+  flex: 0 0 16rem;
+  background: #fff;
+  border-radius: 0.75rem;
+  box-shadow: 0 0.25rem 1rem rgba(0,0,0,0.1);
+  padding: 1rem;
+  height: fit-content;
+  margin-top: 1.5rem;
+}
+
+.store-filters h2 {
+  margin-bottom: 1rem;
+  font-size: 1.25rem;
+  text-align: center;
+}
+
+.filter-group {
+  margin-bottom: 1.5rem;
+}
+
+.filter-group h3 {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.filter-group label {
+  display: block;
+  font-size: 0.875rem;
+  margin-bottom: 0.25rem;
+  cursor: pointer;
+}
+
+
+/* Responsive: menos de 1200px, 3 columnas */
+@media (max-width: 1200px) {
+  .store-products {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Responsive: menos de 900px, ajustes para contenedor y layout */
+@media (max-width: 900px) {
+  .store-container {
+    padding: 1.5rem 0.5rem;
+  }
+  .store-layout {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 2rem;
+  }
+}
+
+/* Responsive: menos de 600px, 1 columna */
+@media (max-width: 600px) {
+  .mivi {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+  .store-products {
+    grid-template-columns: 1fr;
+    gap: 1.25rem 0.5rem;
+  }
+}
+
+/* Nuevos estilos */
+.brand-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.brand-img-option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  position: relative;
+}
+
+.brand-img-option input[type="checkbox"] {
+  display: none;
+}
+
+.brand-img-option img {
+  width: 3.5rem;
+  height: 3.5rem;
+  object-fit: contain;
+  border-radius: 0.5rem;
+  border: 2px solid transparent;
+  background: #f5f5f5;
+  transition: border 0.2s, box-shadow 0.2s;
+  box-shadow: 0 0.1rem 0.5rem rgba(0,0,0,0.07);
+}
+
+.brand-img-option input[type="checkbox"]:checked + img {
+  border: 2px solid #1E1E1E;
+  box-shadow: 0 0.2rem 0.7rem rgba(30,30,30,0.15);
+}
+
+.brand-img-option img:hover {
+  border: 2px solid #888;
+}
+
+/* Mejor paginador */
+.store-pagination {
+  display: flex;
+  justify-content: center;
+  margin: 2rem 0 1rem 0;
+}
+.store-pagination ul {
+  display: flex;
+  gap: 0.5rem;
+  list-style: none;
+  padding: 0;
+}
+.store-pagination li {
+  display: inline-block;
+}
+.store-pagination a, .store-pagination span {
+  display: block;
+  padding: 0.7rem 1.2rem;
+  border-radius: 0.5rem;
+  background: #fff;
+  color: #1E1E1E;
+  text-decoration: none;
+  box-shadow: 0 0.1rem 0.3rem rgba(0,0,0,0.07);
+  font-weight: 600;
+  font-size: 1.1rem;
+  border: 2px solid #1E1E1E;
+  transition: background 0.2s, color 0.2s, border 0.2s;
+}
+.store-pagination li.active span,
+.store-pagination a:hover {
+  background: #1E1E1E;
+  color: #fff;
+  border: 2px solid #1E1E1E;
+}
+.store-pagination li.disabled span {
+  color: #bbb;
+  background: #f5f5f5;
+  border: 2px solid #eee;
+  cursor: not-allowed;
+}
+
+
+/* Sección de filtros de categorías mejorada */
+.category-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background: #f0f4f8;
+  border: 1px solid #c8d0d8;
+  border-radius: 0.5rem;
+}
+
+.category-row label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: #fff;
+  border: 2px solid transparent;
+  border-radius: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s, border 0.3s;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.category-row label:hover {
+  background: #e9f0f7;
+  transform: translateY(-2px);
+  border: 2px solid #007bff;
+}
+
+.category-row input[type="checkbox"] {
+  display: none;
+}
+
+.category-row input[type="checkbox"]:checked + span {
+  background-color: #007bff;
+  color: #fff;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.5rem;
+  transition: background-color 0.3s;
+}

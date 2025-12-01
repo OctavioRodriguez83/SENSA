@@ -1,0 +1,68 @@
+
+/*--------------------------------------------------------------------------------------------*/
+
+.galeria {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 16px;
+  width: 100%;
+}
+
+.galeria p {
+  width:/*auto;*/ calc(25% - 16px);  4 columnas 
+  height: 15vh;
+  border-radius: 10px;
+  display: block;
+}
+/* Responsivo para tabletas */
+@media (max-width: 992px) {
+  .galeria p {
+    width: calc(33.33% - 16px); /* 3 columnas */
+  }
+}
+
+/* Responsivo para móviles */
+@media (max-width: 768px) {
+  .galeria p {
+    width: calc(50% - 16px); /* 2 columnas */
+  }
+}
+
+/* Extra pequeño */
+@media (max-width: 480px) {
+  .galeria p {
+    width: 100%;
+  }
+}
+
+
+
+/*--------------------------------------------------------------------------------------------*/
+
+
+#cards{
+    width: 90%;
+    
+    justify-content: center;
+}
+.card{
+    margin-top: 1%;
+    margin-bottom: 1%;
+    padding: 3%;
+    display: flex;
+    height: auto;
+    flex-direction: row;
+    justify-content: center;
+}
+
+      
+    .redS{
+      color: #000000;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      width: 100%;
+    } 

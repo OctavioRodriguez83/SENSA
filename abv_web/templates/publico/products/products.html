@@ -1,0 +1,57 @@
+{% extends "../nav/index.html" %}
+{% load static %}
+
+{% block link_styles %}
+  <link href="{% static 'publico/css/products/productsstyles.css' %}" rel="stylesheet" />
+{% endblock %}
+
+{% block cuerpo %}
+  {# ——— SeCCIÓN TIENDAS ——— #}
+  <div class="mivi">
+    <div class="tiendas-grid">
+      <!-- Mercado Libre -->
+      <a href="https://www.mercadolibre.com.mx/" target="_blank" class="tienda-card">
+        <img src="{% static 'publico/img/mercadolibre_logo.png' %}" alt="Mercado Libre">
+        <span>Mercado Libre</span>
+      </a>
+      <!-- eBay -->
+      <a href="https://www.ebay.com/" target="_blank" class="tienda-card">
+        <img src="{% static 'publico/img/ebay_logo.jpeg' %}" alt="eBay">
+        <span>eBay</span>
+      </a>
+      <!-- Amazon -->
+      <a href="https://www.amazon.com.mx/" target="_blank" class="tienda-card">
+        <img src="{% static 'publico/img/amazon_logo.png' %}" alt="Amazon">
+        <span>Amazon</span>
+      </a>
+      <!-- Contacto -->
+      <div class="tienda-card contact-card">
+        <span>Contáctanos</span>
+        <p class="contact-info">Tel: (444) 123-4567</p>
+        <p class="contact-info">Email: contacto@abv.mx</p>
+      </div>
+    </div>
+  </div>
+
+  {# ——— SECCIÓN PRODUCTOS DESTACADOS ——— #}
+  <div class="mivi">
+    <h1 class="seccion-title">Productos Destacados</h1>
+    <div class="carousel-destacados">
+      <button class="carousel-btn prev" onclick="moverCarrusel(-1)">‹</button>
+      <div class="carousel-cards" id="carouselCards">
+        {% for destacado in destacados %}
+          <div class="card-destacado">
+            <img src="https://abvelectricsupply.com/media-files/{{ destacado.producto.producto_url_img }}"
+                 alt="{{ destacado.producto.producto_nombre }}">
+            <h4>{{ destacado.producto.producto_nombre }}</h4>
+            <p>{{ destacado.producto.descripcion|truncatewords:15 }}</p>
+            <a href="{% url 'product' destacado.producto.producto_sku %}" class="btn btn-dark">Ver detalle</a>
+          </div>
+        {% endfor %}
+      </div>
+      <button class="carousel-btn next" onclick="moverCarrusel(1)">›</button>
+    </div>
+  </div>
+
+  <script src="{% static 'publico/js/products/products_scripts.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,131 @@
+{% extends "../nav/index.html" %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    {% block title %}Productos Destacados - SB Admin{% endblock %}
+    {% block link_styles %}
+    <!-- DataTables Bootstrap 5 CSS -->
+    <link
+      href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css"
+      rel="stylesheet"
+    />
+    <!-- jQuery y DataTables JS -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+    {% endblock %}
+  </head>
+  <body>
+    {% block cuerpo %}
+    <div class="container-fluid py-4">
+      <div class="card shadow-sm border-0">
+        <div class="card-header bg-light">
+          <h3 class="mb-0 text-center">Productos Destacados</h3>
+        </div>
+        <div class="card-body bg-white">
+          <!-- Botón Agregar -->
+          <div class="d-flex justify-content-end align-items-center mb-3">
+            <a href="{% url 'agregar_destacado' %}" class="btn btn-success fw-bold">
+              <i class="fas fa-plus me-1"></i> Agregar
+            </a>
+          </div>
+
+          <!-- Tabla -->
+          <div class="table-responsive">
+            <table
+              id="productosDestacadosTable"
+              class="table table-striped table-hover table-bordered align-middle"
+            >
+              <thead class="table-light">
+                <tr>
+                  <th>Nombre</th>
+                  <th>Categoría</th>
+                  <th>Marca</th>
+                  <th class="text-center">Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for producto in destacados %}
+                <tr
+                  class="clickable-row"
+                  style="cursor: pointer"
+                  data-name="{{ producto.producto.producto_nombre|escapejs }}"
+                  data-category="{{ producto.producto.categoria.categoria_name|escapejs }}"
+                  data-brand="{{ producto.producto.marca.marca_name|escapejs }}"
+                  data-delete-url="{% url 'eliminar_destacado' producto.id %}"
+                >
+                  <td>{{ producto.producto.producto_nombre }}</td>
+                  <td>{{ producto.producto.categoria.categoria_name }}</td>
+                  <td>{{ producto.producto.marca.marca_name }}</td>
+                  <td class="text-center">
+                    <a
+                      href="{% url 'eliminar_destacado' producto.id %}"
+                      class="btn btn-sm btn-danger"
+                      onclick="event.stopPropagation()"
+                    >
+                      Eliminar <i class="fas fa-trash-alt"></i>
+                    </a>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+    <!-- Inicialización DataTables + fila clickeable -->
+    <script>
+      $(function () {
+        const table = $("#productosDestacadosTable").DataTable({
+          language: {
+            search: "Buscar:",
+            lengthMenu: "Mostrar _MENU_ registros",
+            zeroRecords: "No se encontraron registros",
+            info: "Página _PAGE_ de _PAGES_",
+            infoEmpty: "Sin registros",
+            infoFiltered: "(filtrado de _MAX_ totales)",
+            paginate: {
+              first: "Primero",
+              last: "Último",
+              next: "Siguiente",
+              previous: "Anterior",
+            },
+          },
+          responsive: true,
+          autoWidth: false,
+        });
+
+        // Delegación de eventos para filas que muestran el modal de visualización
+        $("#productosDestacadosTable tbody").on("click", "tr.clickable-row", function () {
+          const name = $(this).data("name");
+          const category = $(this).data("category");
+          const brand = $(this).data("brand");
+          const editUrl = $(this).data("edit-url");
+          const deleteUrl = $(this).data("delete-url");
+
+          $("#modalViewProductoLabel").text(name);
+          $("#viewProductoCategory").text(category);
+          $("#viewProductoBrand").text(brand);
+          $("#viewEditBtn").attr("href", editUrl);
+          $("#viewDeleteBtn").attr("href", deleteUrl);
+
+          new bootstrap.Modal($("#modalViewProducto")).show();
+        });
+
+        // Delegación de eventos para el botón de eliminar
+        $("#productosDestacadosTable tbody").on("click", ".btn-danger", function (e) {
+          e.stopPropagation();
+          if (confirm("¿Estás seguro de eliminar el producto destacado?")) {
+            window.location.href = $(this).attr("href");
+          }
+        });
+      });
+    </script>
+    {% endblock %}
+  </body>
+</html>

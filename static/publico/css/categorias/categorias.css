@@ -1,0 +1,157 @@
+
+
+/* --- SECCIÓN: GALERÍA DE SOCIOS COMERCIALES --- */
+
+.cateenlace {
+    text-decoration: none;
+    color: black;
+    font-size: 1.5vw;
+    font-weight: bold; /* Mueve el font-weight aquí ya que el span ahora está dentro */
+
+    /* ¡CLAVE!: Convertir el enlace en un contenedor flex para centrar su contenido */
+    display: flex;
+    flex-direction: column; /* Apila la imagen y el texto verticalmente */
+    align-items: center; /* Centra la imagen y el texto horizontalmente */
+    justify-content: center; /* Centra verticalmente si hay espacio */
+    width: 100%; /* Ocupa todo el ancho de su padre (.contcate) */
+    height: 100%; /* Ocupa toda la altura de su padre (.contcate) */
+    padding: 10px; /* Añade padding interno para que el contenido no toque los bordes */
+    box-sizing: border-box; /* Incluye el padding en el tamaño */
+}
+.imgcateg{
+    width: 80%;
+    height: 13vw;
+    /* Asegúrate de que las imágenes dentro de imgcateg también estén centradas si aplica */
+    display: flex; /* Para centrar contenido dentro de imgcateg si lo tiene */
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px; /* Espacio entre la imagen y el texto */
+}
+.contcate {
+    /* Mantenemos el contcate como un contenedor para cada item */
+    /* Lo esencial es su ancho para el diseño de columnas */
+    width: calc(25% - 16px); /* 4 columnas, ajusta el 16px según el gap */
+    /* Eliminar display: block; y text-align: center; de aquí si están */
+    /* Altura automática para que se ajuste al contenido */
+    height: auto;
+    border-radius: 10px;
+    margin-bottom: 1%; /* Mantenemos el margen inferior */
+    /* Puedes añadir box-shadow o border aquí si quieres que cada .contcate sea la "card" visual */
+    /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
+    /* background-color: #fff; */
+    overflow: hidden; /* Asegura que el contenido no se salga del radio del borde */
+}
+
+.imgcateg {
+    /* La altura debe ser para la imagen dentro, no para este div */
+    width: 80%; /* Ancho relativo al .cateenlace */
+    /* border: solid 12px;  No es ideal para la imagen, quizá para el contcate */
+    /* height: 15vw;  Esto lo manejará la imagen directamente */
+    margin-bottom: 10px; /* Espacio entre la imagen y el texto */
+    display: flex; /* Flexbox para centrar la imagen dentro de imgcateg */
+    justify-content: center;
+    align-items: center;
+    overflow: hidden; /* Oculta cualquier parte de la imagen que se desborde */
+    /* Podrías darle un border-radius o un aspecto de contenedor a la imagen aquí */
+    border-radius: 8px; /* Pequeño radio a la caja de la imagen */
+    aspect-ratio: 1 / 1; /* Mantiene la proporción 1:1 */
+}
+
+.imgcateg img {
+    width: 100%;
+    height: 100%; /* La imagen ocupará todo el espacio de imgcateg */
+    object-fit: contain; /* Recorta la imagen para que cubra el espacio sin distorsionarse */
+    border-radius: 8px; /* Redondea la imagen dentro de la caja */
+}
+
+/* El span no necesita estilos especiales de alineación si el padre (.cateenlace) ya es flex column y align-items: center */
+.cateenlace span {
+    text-align: center; /* Asegura que el texto dentro del span esté centrado */
+    display: block; /* Para que text-align funcione correctamente en algunos navegadores */
+    margin-top: auto; /* Empuja el span hacia abajo si hay espacio extra */
+}
+
+.galeria2 {
+    display: flex;
+    width: 100%;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 16px;
+}
+
+/* Responsive para tabletas (3 columnas) */
+@media (max-width: 992px) {
+
+    .cateenlace{
+        text-decoration: none;
+        color: black;
+        font-size: 2.5vw;
+    }
+    .contcate{
+        width: calc(33.33% - 16px) ; /* Se ajusta automáticamente al contenido y responsive */
+        height: auto; /* Altura fija relativa al viewport */
+        border-radius: 10px;
+        display: block;
+        text-align: center;
+    }
+}
+
+/* Responsive para móviles (2 columnas) */
+@media (max-width: 768px) {
+    .cateenlace{
+        text-decoration: none;
+        color: black;
+        font-size: 2.5vw;
+    }
+    .contcate{
+        width: calc(50% - 16px) ; /* Se ajusta automáticamente al contenido y responsive */
+        height: auto; /* Altura fija relativa al viewport */
+        border-radius: 10px;
+        display: block;
+        text-align: center;
+    }
+}
+
+/* Responsive para extra pequeños (1 columna) */
+@media (max-width: 480px) {
+
+    .cateenlace{
+        text-decoration: none;
+        color: black;
+        font-size: 3.5vw;
+    }
+    .contcate{
+        width: 100% ; /* Se ajusta automáticamente al contenido y responsive */
+        height: auto; /* Altura fija relativa al viewport */
+        border-radius: 10px;
+        display: block;
+        text-align: center;
+    }
+}
+
+
+
+/* --- FIN SECCIÓN: GALERÍA DE SOCIOS COMERCIALES --- */
+
+
+
+#cards {
+    width: 90%;
+    justify-content: center;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.card {
+    margin-top: 1%;
+    margin-bottom: 1%;
+    padding: 3%;
+    display: flex;
+    height: auto;
+    flex-direction: row; /* Las tarjetas se muestran en fila */
+    justify-content: center;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Sombra para las tarjetas */
+    border-radius: 16px;
+    background-color: #fff;
+    width:  100%;
+}

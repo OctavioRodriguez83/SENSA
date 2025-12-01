@@ -1,0 +1,136 @@
+<!-- abv_web/templates/adm/proyectos_destacados/agregar_proyecto_destacado.html -->
+{% extends "../nav/index.html" %}
+{% load static %}
+
+{% block title %}Agregar Proyecto Destacado{% endblock %}
+
+{% block link_styles %}
+<link href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css" rel="stylesheet"/>
+{% endblock %}
+
+{% block cuerpo %}
+<div class="container-fluid py-4">
+  <h2 class="mb-4 text-center">Selecciona Proyectos</h2>
+  <form method="post" action="{% url 'agregar_proyecto_destacado' %}">
+    {% csrf_token %}
+
+    <!-- === Tabla de TODOS los proyectos no destacados === -->
+    <div class="card shadow-sm mb-4">
+      <div class="card-header bg-light">
+        <h4 class="mb-0">Todos los proyectos</h4>
+      </div>
+      <div class="card-body">
+        <table id="allProjectsTable" class="table table-striped table-hover table-bordered">
+          <thead class="table-light">
+            <tr>
+              <th>ID</th>
+              <th>Nombre</th>
+              <th>Acción</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for p in proyectos %}
+            <tr id="filaProj{{ p.id }}">
+              <td>{{ p.id }}</td>
+              <td>{{ p.proyecto_nombre }}</td>
+              <td>
+                <button type="button" class="btn btn-success btn-sm agregar-btn"
+                        data-id="{{ p.id }}" data-nombre="{{ p.proyecto_nombre }}">
+                  Agregar
+                </button>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- === Tabla de proyectos seleccionados === -->
+    <div class="card shadow-sm mb-4">
+      <div class="card-header bg-light">
+        <h4 class="mb-0">Proyectos seleccionados</h4>
+      </div>
+      <div class="card-body">
+        <table id="selectedProjectsTable" class="table table-striped table-hover table-bordered">
+          <thead class="table-light">
+            <tr>
+              <th>ID</th>
+              <th>Nombre</th>
+              <th>Acción</th>
+            </tr>
+          </thead>
+          <tbody><!-- Se llenará dinámicamente --></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- select oculto para enviar IDs -->
+    <select id="selectedProjects" name="proyectos" multiple hidden></select>
+
+    <!-- Botón GUARDAR -->
+    <div class="d-flex justify-content-center">
+      <button type="submit" class="btn btn-primary fw-bold">Guardar</button>
+    </div>
+  </form>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+
+<script>
+  $(document).ready(function(){
+    // Inicializa DataTables para la tabla de todos los proyectos
+    $('#allProjectsTable').DataTable({
+      responsive: true,
+      autoWidth: false,
+      language: {
+        search: "Buscar:",
+        lengthMenu: "Mostrar _MENU_ registros",
+        zeroRecords: "No se encontraron registros",
+        info: "Página _PAGE_ de _PAGES_",
+        infoEmpty: "Sin registros",
+        infoFiltered: "(filtrado de _MAX_ totales)",
+        paginate: {
+          first: "Primero",
+          last: "Último",
+          next: "Siguiente",
+          previous: "Anterior"
+        }
+      }
+    });
+
+    // Funcionalidad para agregar proyecto a la lista de seleccionados
+    $(document).on('click','.agregar-btn',function(){
+      const id = $(this).data('id');
+      const nombre = $(this).data('nombre');
+      if ($('#selectedProjects option[value="'+id+'"]').length === 0) {
+        $('#selectedProjectsTable tbody').append(
+          `<tr id="selectedProj${id}">
+             <td>${id}</td>
+             <td>${nombre}</td>
+             <td>
+               <button type="button" class="btn btn-danger btn-sm quitar-btn" data-id="${id}">
+                 Quitar
+               </button>
+             </td>
+           </tr>`
+        );
+        $('#selectedProjects').append(
+          `<option value="${id}" selected></option>`
+        );
+        $(this).prop('disabled', true);
+      }
+    });
+
+    // Funcionalidad para quitar proyecto de la lista de seleccionados
+    $(document).on('click','.quitar-btn',function(){
+      const id = $(this).data('id');
+      $('#selectedProj' + id).remove();
+      $('#selectedProjects option[value="'+id+'"]').remove();
+      $('#filaProj' + id + ' .agregar-btn').prop('disabled', false);
+    });
+  });
+</script>
+{% endblock %}

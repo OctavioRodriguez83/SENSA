@@ -1,0 +1,189 @@
+{% extends "../nav/index.html" %}
+{% load static %}
+
+{% block title %}Editar Producto - ABV ELECTRIC SUPPLY{% endblock %}
+
+{% block link_styles %}
+    {{ block.super }}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://kit.fontawesome.com/3365035c0e.js" crossorigin="anonymous"></script>
+{% endblock %}
+
+{% block cuerpo %}
+<div class="container-fluid py-4">
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-light">
+            <h3 class="mb-0 text-center">Editar Producto</h3>
+        </div>
+        <div class="card-body bg-white">
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">{{ form.producto_extendido.label }}</label>
+                        {{ form.producto_extendido }}
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">{{ form.producto_sku.label }}</label>
+                        {{ form.producto_sku }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">{{ form.producto_skunetsuite.label }}</label>
+                        {{ form.producto_skunetsuite }}
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">{{ form.producto_ean.label }}</label>
+                        {{ form.producto_ean }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 mb-3">
+                        <label class="form-label">{{ form.producto_nombre.label }}</label>
+                        {{ form.producto_nombre }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 mb-3">
+                        <label class="form-label">{{ form.producto_descripcion.label }}</label>
+                        {{ form.producto_descripcion }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">{{ form.marca.label }}</label>
+                        {{ form.marca }}
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">{{ form.categoria.label }}</label>
+                        {{ form.categoria }}
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">{{ form.familia.label }}</label>
+                        {{ form.familia }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">{{ form.producto_modelo.label }}</label>
+                        {{ form.producto_modelo }}
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">{{ form.producto_url_img.label }}</label>
+                        {{ form.producto_url_img }}
+                        {% if form.instance.producto_url_img %}
+                            <p class="mt-2">
+                                <img src="/media-files/{{ form.instance.producto_url_img }}" alt="Imagen actual" class="img-thumbnail" style="max-width: 150px; max-height: 150px;">
+                            </p>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 mb-3">
+                        <label class="form-label">{{ form.producto_precio_base.label }}</label>
+                        {{ form.producto_precio_base }}
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label class="form-label">{{ form.producto_precio_amazon.label }}</label>
+                        {{ form.producto_precio_amazon }}
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label class="form-label">{{ form.producto_precio_mercadolibre.label }}</label>
+                        {{ form.producto_precio_mercadolibre }}
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label class="form-label">{{ form.producto_precio_ebay.label }}</label>
+                        {{ form.producto_precio_ebay }}
+                    </div>
+                </div>
+                <div class="text-end">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-edit me-1"></i> Actualizar
+                    </button>
+                    <a href="{% url 'productos' %}" class="btn btn-secondary">
+                        <i class="fas fa-times me-1"></i> Cancelar
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function() {
+        // IDs iniciales para precargar los dropdowns
+        var initialMarcaId = "{{ form.instance.marca.id }}";
+        var initialCategoriaId = "{{ form.instance.categoria.id }}";
+        var initialFamiliaId = "{{ form.instance.familia.id }}";
+
+        // Función para cargar las categorías por marca
+        function loadCategorias(marcaId, selectedCategoriaId) {
+            var categoriaSelect = $('#id_categoria');
+            var familiaSelect = $('#id_familia');
+            categoriaSelect.empty().append('<option value="">--- Selecciona una Categoría ---</option>').prop('disabled', true);
+            familiaSelect.empty().append('<option value="">--- Selecciona una Familia ---</option>').prop('disabled', true);
+
+            if (marcaId) {
+                $.ajax({
+                    url: "{% url 'get_categorias_por_marca' %}",
+                    data: { 'marca': marcaId },
+                    dataType: 'json',
+                    success: function(data) {
+                        $.each(data, function(key, value) {
+                            categoriaSelect.append('<option value="' + value.id + '">' + value.name + '</option>');
+                        });
+                        categoriaSelect.prop('disabled', false);
+                        if (selectedCategoriaId) {
+                            categoriaSelect.val(selectedCategoriaId);
+                        }
+                    }
+                });
+            }
+        }
+
+        // Función para cargar las familias por categoría
+        function loadFamilias(categoriaId, selectedFamiliaId) {
+            var familiaSelect = $('#id_familia');
+            familiaSelect.empty().append('<option value="">--- Selecciona una Familia ---</option>').prop('disabled', true);
+
+            if (categoriaId) {
+                $.ajax({
+                    url: "{% url 'get_familias_por_categoria' %}",
+                    data: { 'categoria': categoriaId },
+                    dataType: 'json',
+                    success: function(data) {
+                        $.each(data, function(key, value) {
+                            familiaSelect.append('<option value="' + value.id + '">' + value.name + '</option>');
+                        });
+                        familiaSelect.prop('disabled', false);
+                        if (selectedFamiliaId) {
+                            familiaSelect.val(selectedFamiliaId);
+                        }
+                    }
+                });
+            }
+        }
+
+        // Cargar las categorías y familias al inicio si ya hay valores
+        if (initialMarcaId) {
+            loadCategorias(initialMarcaId, initialCategoriaId);
+        }
+        if (initialCategoriaId) {
+            loadFamilias(initialCategoriaId, initialFamiliaId);
+        }
+
+        // Evento de cambio para el dropdown de Marca
+        $('#id_marca').change(function() {
+            var marcaId = $(this).val();
+            loadCategorias(marcaId);
+        });
+
+        // Evento de cambio para el dropdown de Categoría
+        $('#id_categoria').change(function() {
+            var categoriaId = $(this).val();
+            loadFamilias(categoriaId);
+        });
+    });
+</script>
+{% endblock %}

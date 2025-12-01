@@ -1,0 +1,234 @@
+{% extends "../nav/index.html" %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  {% block link_styles %}
+    <!-- DataTables Bootstrap 5 CSS -->
+    <link
+      href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css"
+      rel="stylesheet"
+    />
+    <!-- FontAwesome -->
+    <script src="https://kit.fontawesome.com/3365035c0e.js" crossorigin="anonymous"></script>
+    <!-- jQuery + DataTables JS -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+  {% endblock %}
+</head>
+<body>
+  {% block cuerpo %}
+  <div class="container-fluid py-4">
+    <div class="card shadow-sm border-0">
+      <div class="card-header bg-light">
+        <h3 class="mb-0 text-center">Usuarios</h3>
+      </div>
+      <div class="card-body bg-white">
+      <div class="d-flex justify-content-end mb-3">
+          <button type="button" id="b_add" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#staticBackdropAdd">
+            <i class="fas fa-plus me-1"></i> Agregar
+          </button>
+        </div>
+        <!-- listado -->
+        <div class="table-responsive">
+          <table
+            id="usuariosTable"
+            class="table table-striped table-hover table-bordered align-middle"
+          >
+            <thead class="table-light">
+              <tr>
+                <th>Username</th>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Email</th>
+                <th class="text-center">Super Usuario</th>
+                <th class="text-center">Activo</th>
+                <th>Última conexión</th>
+                <th class="text-center">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for u in usuarios %}
+              <tr>
+                <td>{{ u.username }}</td>
+                <td>{{ u.first_name }}</td>
+                <td>{{ u.last_name }}</td>
+                <td>{{ u.email }}</td>
+                <td class="text-center">
+                  {% if u.is_superuser %}
+                    <i class="fa-solid fa-user-shield text-primary"></i>
+                  {% else %}
+                    <i class="fa-solid fa-user text-secondary"></i>
+                  {% endif %}
+                </td>
+                <td class="text-center">
+                  {% if u.is_active %}
+                    <i class="fa-solid fa-check-circle text-success"></i>
+                  {% else %}
+                    <i class="fa-solid fa-times-circle text-danger"></i>
+                  {% endif %}
+                </td>
+                <td>{{ u.last_login }}</td>
+                <td class="text-center">
+                  <a href="{% url 'editar_usuario' u.id %}" class="btn btn-sm btn-warning me-1">
+                    Editar <i class="bi bi-pencil-fill"></i>
+                  </a>
+                  <a href="{% url 'eliminar_usuario' u.id %}" class="btn btn-sm btn-danger">
+                    Eliminar <i class="fas fa-trash-alt"></i>
+                  </a>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {% if usuario_actual %}
+  <!-- Modal de Editar Usuario -->
+  <div
+    class="modal fade"
+    id="editUsuarioModal"
+    data-bs-backdrop="static"
+    data-bs-keyboard="false"
+    tabindex="-1"
+    aria-labelledby="editUsuarioModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editUsuarioModalLabel">Editar Usuario</h5>
+          <a href="{% url 'usuarios' %}" class="btn-close"></a>
+        </div>
+        <form
+          action="{% url 'editar_usuario' usuario_actual.id %}"
+          method="POST"
+        >
+          {% csrf_token %}
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="username" class="form-label">Nombre de Usuario</label>
+              <input
+                type="text"
+                name="username"
+                id="username"
+                class="form-control"
+                value="{{ usuario_actual.username }}"
+                required
+              >
+            </div>
+            <div class="mb-3">
+              <label for="first_name" class="form-label">Nombre</label>
+              <input
+                type="text"
+                name="first_name"
+                id="first_name"
+                class="form-control"
+                value="{{ usuario_actual.first_name }}"
+                required
+              >
+            </div>
+            <div class="mb-3">
+              <label for="last_name" class="form-label">Apellido</label>
+              <input
+                type="text"
+                name="last_name"
+                id="last_name"
+                class="form-control"
+                value="{{ usuario_actual.last_name }}"
+                required
+              >
+            </div>
+            <div class="mb-3">
+              <label for="email" class="form-label">Correo Electrónico</label>
+              <input
+                type="email"
+                name="email"
+                id="email"
+                class="form-control"
+                value="{{ usuario_actual.email }}"
+                required
+              >
+            </div>
+            <div class="mb-3">
+              <label for="password" class="form-label">Contraseña (opcional)</label>
+              <input
+                type="password"
+                name="password"
+                id="password"
+                class="form-control"
+              >
+            </div>
+            <div class="form-check mb-3">
+              <input
+                type="checkbox"
+                name="is_superuser"
+                id="is_superuser"
+                class="form-check-input"
+                {% if usuario_actual.is_superuser %}checked{% endif %}
+              >
+              <label for="is_superuser" class="form-check-label">Super Usuario</label>
+            </div>
+            <div class="form-check mb-3">
+              <input
+                type="checkbox"
+                name="is_active"
+                id="is_active"
+                class="form-check-input"
+                {% if usuario_actual.is_active %}checked{% endif %}
+              >
+              <label for="is_active" class="form-check-label">Activo</label>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <a
+              href="{% url 'usuarios' %}"
+              class="btn btn-secondary"
+            >Cancelar</a>
+            <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- Scripts -->
+  <script>
+    $(document).ready(function() {
+      // Inicializa DataTable
+      $("#usuariosTable").DataTable({
+        language: {
+          search: "Buscar:",
+          lengthMenu: "Mostrar _MENU_ registros",
+          zeroRecords: "No se encontraron registros",
+          info: "Página _PAGE_ de _PAGES_",
+          infoEmpty: "Sin registros",
+          infoFiltered: "(filtrado de _MAX_ totales)",
+          paginate: {
+            first: "Primero",
+            last: "Último",
+            next: "Siguiente",
+            previous: "Anterior"
+          }
+        },
+        responsive: true,
+        autoWidth: false
+      });
+
+      // Si hay usuario_actual, abre el modal
+      {% if usuario_actual %}
+      const editModal = new bootstrap.Modal(
+        document.getElementById('editUsuarioModal')
+      );
+      editModal.show();
+      {% endif %}
+    });
+  </script>
+  {% endblock %}
+</body>
+</html>

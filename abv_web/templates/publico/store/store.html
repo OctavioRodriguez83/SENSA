@@ -1,0 +1,70 @@
+{% extends "../nav/index.html" %}
+{% load static %}
+
+{% block link_styles %}
+  <link href="{% static 'publico/css/nav/styles.css' %}" rel="stylesheet" />
+  <link href="{% static 'publico/css/store/storestyles.css' %}" rel="stylesheet" />
+{% endblock %}
+
+{% block cuerpo %}
+  <div class="mivi">
+    <div class="store-container">
+
+      <!-- Filtro de categorías debajo del buscador, solo texto -->
+      <div class="category-row">
+      {% for categoria in categorias %}
+        <label>
+          <input type="checkbox" name="categoria" value="{{ categoria.id }}">
+          <span>{{ categoria.categoria_name }}</span>
+        </label>
+      {% empty %}
+        <span>No hay categorías disponibles</span>
+      {% endfor %}
+    </div>
+
+      <div class="store-layout">
+        <!-- Productos -->
+        <div class="store-products">
+          {% include "publico/partials/_store_products.html" %}
+        </div>
+        <!-- Panel lateral de filtros -->
+        <aside class="store-filters">
+          <div class="filter-group">
+            <h3>Marcas</h3>
+            <div class="brand-list">
+              {% for marca in marcas %}
+                <label class="brand-img-option">
+                  <input type="checkbox" name="marca" value="{{ marca.id }}">
+                  <img src="https://abvelectricsupply.com//media-files/{{ marca.marca_url_img }}" alt="{{ marca.marca_name }}">
+                  <span>{{ marca.marca_name }}</span>
+                </label>
+              {% endfor %}
+            </div>
+          </div>
+          <div class="filter-group">
+            <h3>Precio</h3>
+            <div style="display:flex; gap:0.5rem; align-items:center;">
+              <input type="number" id="precio-min" placeholder="Mín" min="0" style="width:5rem;">
+              <span>-</span>
+              <input type="number" id="precio-max" placeholder="Máx" min="0" style="width:5rem;">
+            </div>
+            <button id="apply-filters" style="margin-top:1rem;">Aplicar filtros</button>
+          </div>
+        </aside>
+      </div>
+
+
+     <!-- Botón para limpiar filtros -->
+      <div class="store-clear" style="margin: 1rem 0; text-align: center;">
+        <a href="/products/" class="btn btn-outline-secondary">Limpiar filtros</a>
+      </div>
+
+
+      <!-- Paginador debajo de productos -->
+      <div id="store-paginator">
+        {% include "publico/partials/_store_paginator.html" %}
+      </div>
+    </div>
+  </div>
+<script src="{% static 'publico/js/store/store.js' %}" defer></script>
+{% endblock %}

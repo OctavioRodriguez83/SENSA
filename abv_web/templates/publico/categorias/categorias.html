@@ -1,0 +1,31 @@
+{% extends "../nav/index.html" %}
+{% load static %}
+
+{% block link_styles %}
+  <link href="{% static 'publico/css/categorias/categorias.css' %}" rel="stylesheet" />
+{% endblock %}
+
+{% block cuerpo %}
+  <div class="mivi">
+          <h1>Categorías de {{ marca }}</h1>
+          <div id="cards">
+            <div class="card">
+              <div class="galeria2">
+                {# Limitar a 7 categorías por marca #}
+                {% for categoria_asociada in categorias %}
+                  <div class="contcate">
+                    <a class="cateenlace" href="{% url 'products' %}categoria/{{ categoria_asociada.categoria_name }}">
+                      <div class="imgcateg">
+                        <img  src="https://abvelectricsupply.com//media-files/{{ categoria_asociada.categoria_url_img }}" class="d-block w-100">
+                      </div>
+                      <span>{{ categoria_asociada.categoria_name }}</span>
+                    </a>
+                  </div>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+
+  </div>
+<script src="{% static 'publico/js/store/store.js' %}" defer></script>
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends "../nav/index.html" %}
+{% load static %}
+
+{% block link_styles %}
+<link href="{% static 'publico/css/services/servicesstyles.css' %}" rel="stylesheet" />
+{% endblock %}
+
+{% block cuerpo %}
+<div class="servicios-section">
+  <h1 class="servicios-title">Nuestros Servicios</h1>
+  <div id="cards">
+    {% for servicio in servicios %}
+    <div class="card{% if forloop.counter0|divisibleby:2 %} card-img-left{% else %} card-img-right{% endif %}">
+      {% if forloop.counter0|divisibleby:2 %}
+      <div class="imagencont">
+        <img src="https://abvelectricsupply.com/media-files/{{ servicio.servicio_imagen.name }}" class="imgcards" alt="{{ servicio.servicio_nombre }}">
+      </div>
+      <div class="textcardcont">
+        <h3 class="card-title">{{ servicio.servicio_nombre }}</h3>
+        <div class="card-body">
+          <p class="card-text">{{ servicio.servicio_descripcion }}</p>
+          {% if servicio.servicio_detalle_url %}
+          <a href="{{ servicio.servicio_detalle_url }}" class="servicio-boton">Ver más</a>
+          {% endif %}
+        </div>
+      </div>
+      {% else %}
+      <div class="textcardcont">
+        <h3 class="card-title">{{ servicio.servicio_nombre }}</h3>
+        <div class="card-body">
+          <p class="card-text">{{ servicio.servicio_descripcion }}</p>
+          {% if servicio.servicio_detalle_url %}
+          <a href="{{ servicio.servicio_detalle_url }}" class="servicio-boton">Ver más</a>
+          {% endif %}
+        </div>
+      </div>
+      <div class="imagencont">
+        <img src="https://abvelectricsupply.com/media-files/{{ servicio.servicio_imagen.name }}" class="imgcards" alt="{{ servicio.servicio_nombre }}">
+      </div>
+      {% endif %}
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

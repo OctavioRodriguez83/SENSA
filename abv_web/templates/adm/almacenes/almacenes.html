@@ -1,0 +1,223 @@
+{% extends "../nav/index.html" %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  {% block title %}Almacenes - SB Admin{% endblock %}
+  {% block link_styles %}
+    <link href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+  {% endblock %}
+</head>
+<body>
+{% block cuerpo %}
+<div class="container-fluid py-4">
+  <!-- Card principal con listado de almacenes -->
+  <div class="card shadow-sm border-0">
+    <div class="card-header bg-light">
+      <h3 class="mb-0 text-center">Almacenes</h3>
+    </div>
+    <div class="card-body bg-white">
+      <!-- Botón Agregar -->
+      <div class="d-flex justify-content-end mb-3">
+        <button type="button" class="btn btn-success fw-bold" data-bs-toggle="modal" data-bs-target="#staticBackdropAddAlmacen">
+          <i class="fas fa-plus me-1"></i> Agregar
+        </button>
+      </div>
+      <!-- Tabla de almacenes -->
+      <div class="table-responsive">
+        <table id="almacenesTable" class="table table-striped table-hover table-bordered align-middle">
+          <thead class="table-light">
+            <tr>
+              <th>Empresa</th>
+              <th>Nombre</th>
+              <th>Calle</th>
+              <th>Número</th>
+              <th>Colonia</th>
+              <th>CP</th>
+              <th>Ciudad</th>
+              <th>Estado</th>
+              <th class="text-center">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for almacen in almacenes %}
+            <tr class="clickable-row"
+                style="cursor:pointer"
+                data-empresa="{{ almacen.empresa.empresa_nombre }}"
+                data-name="{{ almacen.almacen_nombre }}"
+                data-calle="{{ almacen.almacen_direccion_calle }}"
+                data-numero="{{ almacen.almacen_direccion_numero }}"
+                data-colonia="{{ almacen.almacen_direccion_colonia }}"
+                data-cp="{{ almacen.almacen_direccion_cp }}"
+                data-ciudad="{{ almacen.almacen_direccion_ciudad }}"
+                data-estado="{{ almacen.almacen_direccion_estado }}"
+                data-edit-url="{% url 'editar_almacen' almacen.id %}"
+                data-delete-url="{% url 'eliminar_almacen' almacen.id %}">
+              <td>{{ almacen.empresa.empresa_nombre }}</td>
+              <td>{{ almacen.almacen_nombre }}</td>
+              <td>{{ almacen.almacen_direccion_calle }}</td>
+              <td>{{ almacen.almacen_direccion_numero }}</td>
+              <td>{{ almacen.almacen_direccion_colonia }}</td>
+              <td>{{ almacen.almacen_direccion_cp }}</td>
+              <td>{{ almacen.almacen_direccion_ciudad }}</td>
+              <td>{{ almacen.almacen_direccion_estado }}</td>
+              <td class="text-center">
+                <a href="{% url 'editar_almacen' almacen.id %}" class="btn btn-sm btn-warning me-1" onclick="event.stopPropagation()">
+                  Editar <i class="bi bi-pencil-fill"></i>
+                </a>
+                <a href="{% url 'eliminar_almacen' almacen.id %}" class="btn btn-sm btn-danger" onclick="event.stopPropagation()">
+                  Eliminar <i class="fas fa-trash-alt"></i>
+                </a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Agregar Almacén -->
+  <div class="modal fade" id="staticBackdropAddAlmacen" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropAddAlmacenLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="staticBackdropAddAlmacenLabel">Nuevo Almacén</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <form action="{% url 'almacenes' %}" method="POST">
+          {% csrf_token %}
+          <div class="modal-body">
+            <div class="mb-3">
+              <label class="form-label">Empresa</label>
+              {{ formA.empresa }}
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Nombre del Almacén</label>
+              {{ formA.almacen_nombre }}
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Calle</label>
+              {{ formA.almacen_direccion_calle }}
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Número</label>
+              {{ formA.almacen_direccion_numero }}
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Colonia</label>
+              {{ formA.almacen_direccion_colonia }}
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Código Postal</label>
+              {{ formA.almacen_direccion_cp }}
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Ciudad</label>
+              {{ formA.almacen_direccion_ciudad }}
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Estado</label>
+              {{ formA.almacen_direccion_estado }}
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-primary">Guardar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Visualización de Almacén -->
+  <div class="modal fade" id="viewAlmacenModal" tabindex="-1" aria-labelledby="viewAlmacenModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content border-0 rounded-4 shadow-lg">
+        <div class="modal-header bg-secondary bg-opacity-10 border-bottom-0">
+          <h5 class="modal-title fw-bold" id="viewAlmacenModalLabel"></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body p-4">
+          <div class="row g-4">
+            <div class="col-md-7 d-flex flex-column justify-content-between">
+              <div>
+                <h4 class="fw-semibold mb-3" id="viewAlmacenName"></h4>
+                <p id="viewAlmacenDetails" class="fs-6 lh-base"></p>
+              </div>
+              <div class="mt-4">
+                <a id="viewEditAlmacenBtn" href="#" class="btn btn-outline-warning me-2">
+                  <i class="bi bi-pencil-fill"></i> Editar
+                </a>
+                <a id="viewDeleteAlmacenBtn" href="#" class="btn btn-outline-danger me-2">
+                  <i class="fas fa-trash-alt"></i> Eliminar
+                </a>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  $(function() {
+    // Inicialización de DataTables
+    $("#almacenesTable").DataTable({
+      language: {
+        search: "Buscar:",
+        lengthMenu: "Mostrar _MENU_ registros",
+        zeroRecords: "No se encontraron registros",
+        info: "Página _PAGE_ de _PAGES_",
+        infoEmpty: "Sin registros",
+        infoFiltered: "(filtrado de _MAX_ totales)",
+        paginate: {
+          first: "Primero",
+          last: "Último",
+          next: "Siguiente",
+          previous: "Anterior"
+        }
+      },
+      responsive: true,
+      autoWidth: false
+    });
+
+    // Evento click para visualizar detalles del almacen
+    $(".clickable-row").on("click", function() {
+      const empresa = $(this).data("empresa");
+      const name = $(this).data("name");
+      const calle = $(this).data("calle");
+      const numero = $(this).data("numero");
+      const colonia = $(this).data("colonia");
+      const cp = $(this).data("cp");
+      const ciudad = $(this).data("ciudad");
+      const estado = $(this).data("estado");
+      const editUrl = $(this).data("edit-url");
+      const deleteUrl = $(this).data("delete-url");
+
+      $("#viewAlmacenModalLabel").text("Almacén (" + empresa + ")");
+      $("#viewAlmacenName").text(name);
+      $("#viewAlmacenDetails").html(
+        "<strong>Calle:</strong> " + calle + " &nbsp;&nbsp;" +
+        "<strong>Número:</strong> " + numero + "<br>" +
+        "<strong>Colonia:</strong> " + colonia + " &nbsp;&nbsp;" +
+        "<strong>CP:</strong> " + cp + "<br>" +
+        "<strong>Ciudad:</strong> " + ciudad + " &nbsp;&nbsp;" +
+        "<strong>Estado:</strong> " + estado
+      );
+      $("#viewEditAlmacenBtn").attr("href", editUrl);
+      $("#viewDeleteAlmacenBtn").attr("href", deleteUrl);
+
+      new bootstrap.Modal(document.getElementById("viewAlmacenModal")).show();
+    });
+  });
+</script>
+{% endblock %}
+</body>
+</html>

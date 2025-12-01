@@ -1,0 +1,140 @@
+{% extends "../nav/index.html" %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  {% block link_styles %}
+    <!-- DataTables Bootstrap 5 CSS -->
+    <link href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
+    <!-- jQuery y DataTables JS -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+  {% endblock %}
+</head>
+<body>
+  {% block cuerpo %}
+  <div class="container-fluid py-4">
+    <div class="card shadow-sm border-0">
+      <div class="card-header bg-light">
+        <h3 class="mb-0 text-center">Tiendas</h3>
+      </div>
+      <div class="card-body bg-white">
+        <!-- Botón Agregar (opcional en edición) -->
+        <div class="d-flex justify-content-end mb-3">
+          <button type="button" class="btn btn-success fw-bold" data-bs-toggle="modal" data-bs-target="#editTiendaModal">
+            <i class="fas fa-plus me-1"></i> Agregar
+          </button>
+        </div>
+        <!-- Tabla de Tiendas -->
+        <div class="table-responsive">
+          <table id="tiendasTable" class="table table-striped table-hover table-bordered align-middle">
+            <thead class="table-light">
+              <tr>
+                <th>Nombre</th>
+                <th>Enlace</th>
+                <th>Descripción</th>
+                <th>Ubicación</th>
+                <th class="text-center">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for tienda in tiendas %}
+              <tr>
+                <td>{{ tienda.tienda_nombre }}</td>
+                <td>
+                  <a href="{{ tienda.tienda_enlace }}" target="_blank">{{ tienda.tienda_enlace }}</a>
+                </td>
+                <td>{{ tienda.tienda_descripcion }}</td>
+                <td>{{ tienda.tienda_ubicacion }}</td>
+                <td class="text-center">
+                  <a href="{% url 'editar_tienda' tienda.id %}" class="btn btn-sm btn-warning me-1" onclick="event.stopPropagation()">
+                    Editar <i class="bi bi-pencil-fill"></i>
+                  </a>
+                  <a href="{% url 'eliminar_tienda' tienda.id %}" class="btn btn-sm btn-danger" onclick="event.stopPropagation()">
+                    Eliminar <i class="fas fa-trash-alt"></i>
+                  </a>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Edición de Tienda -->
+  <!-- Modal de Edición de Tienda -->
+  <div class="modal fade" id="editTiendaModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="editTiendaModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editTiendaModalLabel">Editar Tienda</h5>
+          <a href="{% url 'tiendas' %}" class="btn-close"></a>
+        </div>
+        <form action="{% url 'editar_tienda' tienda.id %}" method="POST" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="modal-body">
+            <div class="mb-3">
+              <label class="form-label">Nombre de la tienda</label>
+              <input type="text" name="tienda_nombre" class="form-control" value="{{ tienda.tienda_nombre }}" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Enlace</label>
+              <input type="url" name="tienda_enlace" class="form-control" value="{{ tienda.tienda_enlace }}" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Descripción</label>
+              <textarea name="tienda_descripcion" class="form-control" required>{{ tienda.tienda_descripcion }}</textarea>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Ubicación</label>
+              <input type="text" name="tienda_ubicacion" class="form-control" value="{{ tienda.tienda_ubicacion }}" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Imagen actual</label>
+              <img class="img-fluid mb-2" src="/media-files/{{ tienda.tienda_imagen.name }}" alt="{{ tienda.tienda_nombre }}" width="100">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Cambiar imagen</label>
+              <input type="file" name="tienda_imagen" class="form-control">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <a href="{% url 'tiendas' %}" class="btn btn-secondary">Cancelar</a>
+            <button type="submit" class="btn btn-primary">Guardar cambios</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    $(document).ready(function() {
+      $("#tiendasTable").DataTable({
+        language: {
+          search: "Buscar:",
+          lengthMenu: "Mostrar _MENU_ registros",
+          zeroRecords: "No se encontraron registros",
+          info: "Página _PAGE_ de _PAGES_",
+          infoEmpty: "Sin registros",
+          infoFiltered: "(filtrado de _MAX_ totales)",
+          paginate: {
+            first: "Primero",
+            last: "Último",
+            next: "Siguiente",
+            previous: "Anterior"
+          }
+        },
+        responsive: true,
+        autoWidth: false
+      });
+      // Se muestra el modal de edición automáticamente
+      var editModal = new bootstrap.Modal(document.getElementById("editTiendaModal"));
+      editModal.show();
+    });
+  </script>
+  {% endblock %}
+</body>
+</html>

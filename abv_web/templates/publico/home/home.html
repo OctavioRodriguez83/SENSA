@@ -1,0 +1,312 @@
+{% extends "../nav/index.html" %}
+{% load static %}
+
+{% block link_styles %}
+    <link rel="preload" href="{% static 'publico/css/home/homestyles.min.css' %}" as="style" />
+    <link rel="stylesheet" href="{% static 'publico/css/home/homestyles.min.css' %}" media="print" onload="this.media='all'" />
+    
+    <link rel="preload" href="https://unpkg.com/swiper@11.2.10/swiper-bundle.min.css" as="style" />
+    <link rel="stylesheet" href="https://unpkg.com/swiper@11.2.10/swiper-bundle.min.css" media="print" onload="this.media='all'" />
+{% endblock %}
+
+{% block cuerpo %}
+    <div id="heder-cuerpo">
+        <div id="elemcarrusel">
+            <div id="carrprincipal">
+                <div id="carouselExampleCaptions1" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-indicators">
+                        {% for i in indicators_range_carrusel1 %}
+                            <button type="button" 
+                                data-bs-target="#carouselExampleCaptions1" 
+                                data-bs-slide-to="{{ i }}" 
+                                class="{% if forloop.first %}active{% endif %}" 
+                                aria-label="Slide {{ forloop.counter }}">
+                            </button>
+                        {% endfor %}
+                    </div>
+                    <div class="carousel-inner">
+                        <div class="carousel-item active" data-bs-interval="3000">
+                            <img class="carousel-imgc1-2 d-block w-100" src="/media-files/publico/fondo.jpg" alt="..." fetchpriority="high" width="1920" height="1080">
+                            <div class="carousel-caption caption-left">
+                                <img class="imgpost" src="/media-files/publico/Logo2.png" loading="lazy" width="200" height="200">
+                                <h1>Light On</h1>
+                                <p>Tu compañero en el mundo eléctrico</p>
+                            </div>
+                        </div>
+
+                        {% for post in posts %}
+                        <div class="carousel-item" data-bs-interval="3000">
+                            <img class="carousel-imgc1-2 d-block w-100" src="https://abvelectricsupply.com/media-files/{{ post.carrouselBanner_url_img }}" alt="..." loading="lazy" width="1920" height="1080">
+                            <div class="carousel-caption caption-left">
+                                <img class="imgpost" src="/media-files/publico/Logo.png" loading="lazy" width="200" height="200">
+                                <h1>{{ post.carrouselBanner_name }}</h1>
+                                <p>{{ post.carrouselBanner_descripcion }}</p>
+                            </div>
+                        </div>
+                        {% endfor %}
+
+                        {% for cate in categorias %}
+                        <div class="carousel-item" data-bs-interval="3000">
+                            <img class="carousel-imgc1 d-block w-100" src="https://abvelectricsupply.com/media-files/{{ cate.categoria_url_img }}" alt="..." loading="lazy" width="1920" height="1080">
+                            <div class="carousel-caption caption-right INF">
+                                <h1 >{{ cate.categoria_name }}</h1>
+                                <p>{{ cate.carrouselBanner_descripcion }}</p>
+                                <a href="{% url 'products' %}categoria/{{ cate.categoria_name }}" class="btn btn-dark">Ver productos</a>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions1" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions1" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="announcement-bar">
+            <div class="announcements-wrapper">
+                {% for marca in marcas %}
+                    <a href="{% url 'products' %}marca/{{ marca.marca_name }}">
+                        <img loading="lazy" 
+                            src="https://abvelectricsupply.com/media-files/{{ marca.marca_url_img.name }}" 
+                            alt="{{ marca.marca_name }} Logo"
+                            width="150" 
+                            height="150"
+                            
+                        >
+                    </a>
+                {% endfor %}
+                {% for marca in marcas %}
+                    <a href="{% url 'products' %}marca/{{ marca.marca_name }}">
+                        <img loading="lazy" 
+                            src="https://abvelectricsupply.com/media-files/{{ marca.marca_url_img.name }}" 
+                            alt="{{ marca.marca_name }} Logo"
+                            width="150" 
+                            height="150"
+                             
+                        >
+                    </a>
+                {% endfor %}
+                {% for marca in marcas %}
+                    <a href="{% url 'products' %}marca/{{ marca.marca_name }}">
+                        <img loading="lazy" 
+                            src="https://abvelectricsupply.com/media-files/{{ marca.marca_url_img.name }}" 
+                            alt="{{ marca.marca_name }} Logo"
+                            width="150" 
+                            height="150"
+                            
+                        >
+                    </a>
+                {% endfor %}
+                {% for marca in marcas %}
+                    <a href="{% url 'products' %}marca/{{ marca.marca_name }}">
+                        <img loading="lazy" 
+                            src="https://abvelectricsupply.com/media-files/{{ marca.marca_url_img.name }}" 
+                            alt="{{ marca.marca_name }} Logo"
+                            width="150" 
+                            height="150"
+                            
+                        >
+                    </a>
+                {% endfor %}
+                {% for marca in marcas %}
+                    <a href="{% url 'products' %}marca/{{ marca.marca_name }}">
+                        <img loading="lazy" 
+                            src="https://abvelectricsupply.com/media-files/{{ marca.marca_url_img.name }}" 
+                            alt="{{ marca.marca_name }} Logo"
+                            width="150" 
+                            height="150"
+                            
+                        >
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
+      
+        <div class="mivi">
+            {% for marca_obj in marcas %}
+                {% if marca_obj.categorias_asociadas.all %}
+                    <!--{% if forloop.first %}
+                        <div class="categorias-header">
+                            <a href="https://hgb-imagenes.s3.us-east-2.amazonaws.com/pdf/INVENTARIO+ABV.pdf"
+                            target="_blank"
+                            class="btn-inventario">
+                                Consulta aquí nuestro <br> inventario completo
+                            </a>
+                        </div> 
+                    {% endif %}-->
+                    <h1>Categorías de {{ marca_obj.marca_name }}</h1>
+                    <div id="cards">
+                        <div class="card">
+                            <div class="galeria2">
+                                {% for categoria_asociada in marca_obj.categorias_asociadas.all|dictsort:"categoria_prioridad"|slice:":7" %}
+                                    {% if categoria_asociada.statusCategoria == True %}
+                                        <div class="contcate">
+                                            <a class="cateenlace" href="{% url 'products' %}categoria/{{ categoria_asociada.categoria_name }}">
+                                                <div class="imgcateg">
+                                                    <img src="https://abvelectricsupply.com/media-files/{{ categoria_asociada.categoria_url_img }}" class="d-block w-100" loading="lazy" width="250" height="250">
+                                                </div>
+                                                <span>{{ categoria_asociada.categoria_name }}</span>
+                                            </a>
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                                {% if marca_obj.categorias_asociadas.count > 7 %}
+                                    <div class="contcate">
+                                        <a class="cateenlace" href="{% url 'products' %}marca/{{ marca_obj.marca_name }}">
+                                            <div class="imgcateg">
+                                                <img src="/media-files/publico/mas.png" loading="lazy" width="250" height="250">
+                                            </div>
+                                            <span>Ver más categorías de {{ marca_obj.marca_name }}</span>
+                                        </a>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+        <!--
+        <div class="mivi">
+            <h1>Proyectos Destacados</h1>
+            <div id="carruS">
+                <div class="swiper mySwiper-productos">
+                    <div class="swiper-wrapper">
+                        {% for destacado in indicators_range_carrusel4 %}
+                            {% if destacado > 0 %}
+                                <div class="swiper-slide">
+                                    <img class="carousel-imgc2" src="/media-files/Imagenes_Carrusel_Integracion/carruselintegracion ({{ destacado }}).jpg" alt="..." loading="lazy" width="600" height="400">
+                                    <div class="carousel-caption caption-left INF">
+                                        <h1>{{ destacado.producto.producto_extendido }}</h1>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    <div class="swiper-button-next"></div>
+                    <div class="swiper-button-prev"></div>
+                    <div class="swiper-pagination"></div>
+                </div>
+            </div>
+        </div>
+        -->
+
+        <div class="mivi">
+            <h1>Proyectos Destacados</h1>
+            <div id="carruS">
+
+              <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                  <div class="carousel-item active" data-bs-interval="3000">
+                        <img class="carousel-imgc1 d-block w-100" src="https://abvelectricsupply.com/media-files/Imagenes_Carrusel_Integracion/carruselintegracion  (1).jpg" alt="..." loading="lazy" width="1920" height="1080">
+                      </div>
+                    {% for destacado in indicators_range_carrusel4 %}
+                      {% if destacado > 1 %}
+                      <div class="carousel-item {% if forloop.first %}active{% endif %}" data-bs-interval="3000">
+                        <img class="carousel-imgc1 d-block w-100" src="https://abvelectricsupply.com/media-files/Imagenes_Carrusel_Integracion/carruselintegracion  ({{ destacado }}).jpg" alt="..." loading="lazy" width="1920" height="1080">
+                      </div>
+                      {% endif %}
+                    {% endfor %}
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
+                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
+                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Next</span>
+                </button>
+              </div>
+
+
+               
+        </div>
+
+        <div class="mivi">
+            <h1>Acerca de Nosostros</h1>
+            <div id="cards2">
+                <div class="card2">
+                    <div class="imagencont"> 
+                        <img id="aboutimg" src="/media-files/publico/Logo3.png" alt="..." loading="lazy" width="200" height="200">
+                        <h3 id="aboutT" class="card-title">Light ON</h3>
+                    </div>
+                    <div class="textcardcont">                    
+                        <div class="card-body">
+                            <p class="card-text">En Light ON suministramos productos eléctricos en media y baja tensión e iluminación, con soluciones acorde a las necesidades del mercado. Contamos con productos de alta calidad, somos distribuidores de las mejores marcas reconocidas del mercado. Somos la mejor solución en equipos eléctricos y de iluminación a lo largo y ancho de la República Mexicana.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mivi">
+            <h1>Nuestros Servicios</h1>
+            <div id="cards">
+                {% for servicio in servicios %}
+                    <div class="card">
+                        {% if forloop.counter0|divisibleby:"2" %}
+                            <div class="imagencont">
+                                {% if servicio.servicio_imagen %}
+                                    <img src="https://abvelectricsupply.com/media-files/{{ servicio.servicio_imagen.name }}" class="imgcards" alt="Imagen de {{ servicio.servicio_nombre }}" loading="lazy" width="400" height="300">
+                                {% endif %}
+                            </div>
+                            <div class="textcardcont">
+                                <h3>{{ servicio.servicio_nombre }}</h3>
+                                <p>{{ servicio.servicio_descripcion|truncatewords:30 }}</p>
+                            </div>
+                        {% else %}
+                            <div class="textcardcont">
+                                <h3>{{ servicio.servicio_nombre }}</h3>
+                                <p>{{ servicio.servicio_descripcion|truncatewords:30 }}</p>
+                            </div>
+                            <div class="imagencont">
+                                {% if servicio.servicio_imagen %}
+                                    <img src="https://abvelectricsupply.com/media-files/{{ servicio.servicio_imagen.name }}" class="imgcards" alt="Imagen de {{ servicio.servicio_nombre }}" loading="lazy" width="400" height="300">
+                                {% endif %}
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <script src="https://unpkg.com/swiper/swiper-bundle.min.js" defer></script>
+        
+        <script>
+            // El código de inicialización de Swiper debe ir después de la etiqueta del script de la librería.
+            // Con el atributo "defer" en el script de la librería, este script de inicialización se ejecutará después de que la librería esté cargada.
+            var swiperProductos = new Swiper('.mySwiper-productos', {
+                autoplay: {
+                    delay: 2500,
+                    disableOnInteraction: false,
+                },
+                effect: 'coverflow',
+                grabCursor: true,
+                centeredSlides: true,
+                slidesPerView: 3,
+                loop: true,
+                spaceBetween: 30,
+                coverflowEffect: {
+                    rotate: 50,
+                    stretch: 0,
+                    depth: 100,
+                    modifier: 1,
+                    slideShadows: true,
+                },
+                pagination: {
+                    el: '.swiper-pagination',
+                    clickable: true,
+                },
+                navigation: {
+                    nextEl: '.swiper-button-next',
+                    prevEl: '.swiper-button-prev',
+                },
+            });
+        </script>
+    {% endblock %}

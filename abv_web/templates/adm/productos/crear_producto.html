@@ -1,0 +1,161 @@
+{% extends "../nav/index.html" %}
+{% load static %}
+
+{% block title %}Agregar Producto - ABV ELECTRIC SUPPLY{% endblock %}
+
+{% block link_styles %}
+     {{ block.super }}
+     {% endblock %}
+
+{% block cuerpo %}
+<div class="container-fluid py-4">
+     <div class="card shadow-sm border-0">
+          <div class="card-header bg-light">
+               <h3 class="mb-0 text-center">Agregar Producto</h3>
+          </div>
+          <div class="card-body bg-white">
+               <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="row">
+                         <div class="col-md-6 mb-3">
+                              <label class="form-label">{{ form.producto_extendido.label }}</label>
+                              {{ form.producto_extendido }}
+                         </div>
+                         <div class="col-md-6 mb-3">
+                              <label class="form-label">{{ form.producto_sku.label }}</label>
+                              {{ form.producto_sku }}
+                         </div>
+                    </div>
+                    <div class="row">
+                         <div class="col-md-6 mb-3">
+                              <label class="form-label">{{ form.producto_skunetsuite.label }}</label>
+                              {{ form.producto_skunetsuite }}
+                         </div>
+                         <div class="col-md-6 mb-3">
+                              <label class="form-label">{{ form.producto_ean.label }}</label>
+                              {{ form.producto_ean }}
+                         </div>
+                    </div>
+                    <div class="row">
+                         <div class="col-12 mb-3">
+                              <label class="form-label">{{ form.producto_nombre.label }}</label>
+                              {{ form.producto_nombre }}
+                         </div>
+                    </div>
+                    <div class="row">
+                         <div class="col-12 mb-3">
+                              <label class="form-label">{{ form.producto_descripcion.label }}</label>
+                              {{ form.producto_descripcion }}
+                         </div>
+                    </div>
+                    <div class="row">
+                         <div class="col-md-4 mb-3">
+                              <label class="form-label">{{ form.marca.label }}</label>
+                              {{ form.marca }}
+                         </div>
+                         <div class="col-md-4 mb-3">
+                              <label class="form-label">{{ form.categoria.label }}</label>
+                              {{ form.categoria }}
+                         </div>
+                         <div class="col-md-4 mb-3">
+                              <label class="form-label">{{ form.familia.label }}</label>
+                              {{ form.familia }}
+                         </div>
+                    </div>
+                    <div class="row">
+                         <div class="col-md-6 mb-3">
+                              <label class="form-label">{{ form.producto_modelo.label }}</label>
+                              {{ form.producto_modelo }}
+                         </div>
+                         <div class="col-md-6 mb-3">
+                              <label class="form-label">{{ form.producto_url_img.label }}</label>
+                              {{ form.producto_url_img }}
+                         </div>
+                    </div>
+                    <div class="row">
+                         <div class="col-md-3 mb-3">
+                              <label class="form-label">{{ form.producto_precio_base.label }}</label>
+                              {{ form.producto_precio_base }}
+                         </div>
+                         <div class="col-md-3 mb-3">
+                              <label class="form-label">{{ form.producto_precio_amazon.label }}</label>
+                              {{ form.producto_precio_amazon }}
+                         </div>
+                         <div class="col-md-3 mb-3">
+                              <label class="form-label">{{ form.producto_precio_mercadolibre.label }}</label>
+                              {{ form.producto_precio_mercadolibre }}
+                         </div>
+                         <div class="col-md-3 mb-3">
+                              <label class="form-label">{{ form.producto_precio_ebay.label }}</label>
+                              {{ form.producto_precio_ebay }}
+                         </div>
+                    </div>
+                    <div class="text-end">
+                         <button type="submit" class="btn btn-success">
+                              <i class="fas fa-plus me-1"></i> Agregar
+                         </button>
+                    </div>
+               </form>
+          </div>
+     </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        // Bloquear los dropdown de Categoría y Familia al inicio
+        $('#id_categoria').prop('disabled', true);
+        $('#id_familia').prop('disabled', true);
+
+        // Cuando la Marca cambie...
+        $('#id_marca').change(function() {
+            var marcaId = $(this).val();
+            // Si se selecciona una marca...
+            if (marcaId) {
+                // Habilitar y cargar las categorías
+                $('#id_categoria').prop('disabled', false).empty().append('<option value="">--- Selecciona una Categoría ---</option>');
+                $.ajax({
+                    url: "{% url 'get_categorias_por_marca' %}",
+                    data: {
+                        'marca': marcaId
+                    },
+                    dataType: 'json',
+                    success: function(data) {
+                        $.each(data, function(key, value) {
+                            $('#id_categoria').append('<option value="' + value.id + '">' + value.name + '</option>');
+                        });
+                    }
+                });
+            } else {
+                // Si no se selecciona marca, deshabilitar y vaciar los campos
+                $('#id_categoria').prop('disabled', true).empty().append('<option value="">--- Selecciona una Categoría ---</option>');
+                $('#id_familia').prop('disabled', true).empty().append('<option value="">--- Selecciona una Familia ---</option>');
+            }
+        });
+
+        // Cuando la Categoría cambie...
+        $('#id_categoria').change(function() {
+            var categoriaId = $(this).val();
+            // Si se selecciona una categoría...
+            if (categoriaId) {
+                // Habilitar y cargar las familias
+                $('#id_familia').prop('disabled', false).empty().append('<option value="">--- Selecciona una Familia ---</option>');
+                $.ajax({
+                    url: "{% url 'get_familias_por_categoria' %}",
+                    data: {
+                        'categoria': categoriaId
+                    },
+                    dataType: 'json',
+                    success: function(data) {
+                        $.each(data, function(key, value) {
+                            $('#id_familia').append('<option value="' + value.id + '">' + value.name + '</option>');
+                        });
+                    }
+                });
+            } else {
+                // Si no se selecciona categoría, deshabilitar y vaciar las familias
+                $('#id_familia').prop('disabled', true).empty().append('<option value="">--- Selecciona una Familia ---</option>');
+            }
+        });
+    });
+</script>
+{% endblock %}

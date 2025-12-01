@@ -1,0 +1,164 @@
+{% extends "../nav/index.html" %}
+{% load static %}
+
+{% block title %}Detalle Producto{% endblock %}
+
+{% block cuerpo %}
+<div class="container py-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h3>Detalle de Producto</h3>
+    <a href="{% url 'productos' %}" class="btn btn-secondary">
+      <i class="bi bi-arrow-left"></i> Regresar
+    </a>
+  </div>
+
+  <div class="card">
+    <div class="card-header bg-light">
+      <h4 class="mb-0">{{ producto.producto_nombre }}</h4>
+    </div>
+    <div class="card-body">
+      <div class="row g-4">
+        <div class="col-12 col-md-4">
+          <img src="{% if producto.producto_url_img %}/media-files/{{ producto.producto_url_img.name }}{% endif %}" alt="{{ producto.producto_nombre }}" class="img-fluid rounded" style="max-height: 300px; width: 100%; object-fit: contain;" />
+        </div>
+        <div class="col-12 col-md-8">
+          <h5 class="mb-3">Información General</h5>
+          <div class="row row-cols-1 row-cols-md-2 g-3">
+            <div class="col"><strong>Nombre Extendido:</strong> {{ producto.producto_extendido }}</div>
+            <div class="col"><strong>SKU:</strong> {{ producto.producto_sku }}</div>
+            <div class="col"><strong>SKU Netsuite:</strong> {{ producto.producto_skunetsuite }}</div>
+            <div class="col"><strong>EAN:</strong> {{ producto.producto_ean }}</div>
+            <div class="col"><strong>Modelo:</strong> {{ producto.producto_modelo }}</div>
+          </div>
+          <div class="row g-3 mt-3">
+            <div class="col-12"><strong>Descripción:</strong> {{ producto.producto_descripcion }}</div>
+          </div>
+        </div>
+      </div>
+      <hr class="my-4"/>
+      <h5>Precios</h5>
+      <div class="row row-cols-1 row-cols-md-4 g-3 mb-4">
+        <div class="col"><strong>Base:</strong> ${{ producto.producto_precio_base }}</div>
+        <div class="col"><strong>Amazon:</strong> ${{ producto.producto_precio_amazon }}</div>
+        <div class="col"><strong>MercadoLibre:</strong> ${{ producto.producto_precio_mercadolibre }}</div>
+        <div class="col"><strong>eBay:</strong> ${{ producto.producto_precio_ebay }}</div>
+      </div>
+      <div class="row row-cols-1 row-cols-md-2 g-3 mb-4">
+        <div class="col"><strong>Marca:</strong> {{ producto.marca.marca_name }}</div>
+        <div class="col"><strong>Categoría:</strong> {{ producto.categoria.categoria_name }}</div>
+      </div>
+      <hr class="my-4"/>
+      <h5>Imágenes de Producto</h5>
+      {% if imagenes_secundarias %}
+      <div class="row row-cols-2 row-cols-md-4 g-3">
+        {% for img_sec in imagenes_secundarias %}
+        <div class="col">
+          <div class="ratio ratio-4x3">
+            <img src="/media-files/{{ img_sec.imagen_secundaria.name }}" alt="Secundaria" class="img-fluid rounded" />
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      {% else %}
+      <p class="text-muted">No hay imágenes adicionales.</p>
+      {% endif %}
+      <!-- Bloque estilizado para Total de Stock -->
+      <hr class="my-4"/>
+      <div class="alert alert-info text-center">
+        <h5 class="mb-0">Inventario &mdash; Stock Total: {{ total_stock }}</h5>
+      </div>
+      {% if inventarios %}
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Almacén</th>
+            <th>Stock</th>
+            <th>Fecha modificación</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for inv in inventarios %}
+          <tr>
+            <td>{{ inv.almacen.almacen_nombre }}</td>
+            <td>{% if inv.stock == 0 %}Sin Stock{% else %}{{ inv.stock }}{% endif %}</td>
+            <td>{% if inv.fecha_modificacion %}{{ inv.fecha_modificacion|date:"d/m/Y H:i:s" }}{% else %}Sin modificaciones{% endif %}</td>
+            <td>
+              <a href="{% url 'modificar_stock' inv.id %}" class="btn btn-sm btn-primary">Modificar stock</a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+      <p class="text-muted">No hay inventario registrado.</p>
+      {% endif %}
+      <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#agregarInventarioModal">
+        Agregar inventario
+      </button>
+    </div>
+  </div>
+</div>
+<!-- Modal Agregar Inventario (sin cambios) -->
+<div class="modal fade" id="agregarInventarioModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="agregarInventarioModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="agregarInventarioModalLabel">Agregar Inventario</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cancelar"></button>
+      </div>
+      <form action="{% url 'agregar_inventario' producto.id %}" method="POST">
+        {% csrf_token %}
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="{{ form.almacen.id_for_label }}" class="form-label">Almacén</label>
+            {{ form.producto }}
+          </div>
+          <div class="mb-3">
+            <label for="{{ form.stock.id_for_label }}" class="form-label">Stock</label>
+            {{ form.stock }}
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% if form_modificar %}
+<!-- Modal Modificar Stock (sin cambios) -->
+<div class="modal fade" id="modificarStockModal" tabindex="-1" aria-labelledby="modificarStockModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modificarStockModalLabel">Modificar Stock</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <form method="POST" action="{% url 'modificar_stock' inventario_modificar.id %}">
+        {% csrf_token %}
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="{{ form.almacen.id_for_label }}" class="form-label">Almacén</label>
+            {{ form.producto }}
+          </div>
+          <div class="mb-3">
+            <label for="{{ form_modificar.stock.id_for_label }}" class="form-label">Stock</label>
+            {{ form_modificar.stock }}
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Guardar cambios</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<script>
+  var modificarStockModal = new bootstrap.Modal(document.getElementById('modificarStockModal'));
+  modificarStockModal.show();
+</script>
+{% endif %}
+{% endblock %}

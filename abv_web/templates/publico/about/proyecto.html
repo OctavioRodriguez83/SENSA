@@ -1,0 +1,53 @@
+{% extends "../nav/index.html" %}
+        {% load static %}
+
+        {% block link_styles %}
+          <link href="{% static 'publico/css/about/aboutstyles.css' %}" rel="stylesheet" />
+          <link href="{% static 'publico/css/about/project.css' %}" rel="stylesheet" />
+        {% endblock %}
+
+        {% block cuerpo %}
+        <div class="mivi">
+          <main class="blog-main">
+            <article class="blog-article">
+              {% if proyecto.proyecto_imagen %}
+                <div class="hero-banner" style="background-image: url('/media-files/{{ proyecto.proyecto_imagen.name }}');">
+                  <div class="hero-overlay">
+                    <h1 class="hero-title">{{ proyecto.proyecto_nombre }}</h1>
+                  </div>
+                </div>
+              {% endif %}
+              <div class="blog-content">
+                {% if proyecto.fecha_creacion %}
+                  <p class="blog-date">{{ proyecto.fecha_creacion|date:"d M Y" }}</p>
+                {% endif %}
+                <div class="blog-description">
+                  {{ proyecto.proyecto_descripcion_larga|safe }}
+                </div>
+              </div>
+            </article>
+
+            <section class="related-projects-section">
+              <h2 class="related-title">Otros proyectos que podrían interesarte</h2>
+              <div class="related-cards">
+                {% for p in extra_projects %}
+                <div class="related-card">
+                  <div class="related-img-container">
+                    {% if p.proyecto_imagen %}
+                      <img src="/media-files/{{ p.proyecto_imagen.name }}" alt="{{ p.proyecto_nombre }}">
+                    {% else %}
+                      <div class="img-placeholder"></div>
+                    {% endif %}
+                  </div>
+                  <div class="related-card-body">
+                    <h3 class="related-card-title">{{ p.proyecto_nombre }}</h3>
+                    <p class="related-card-desc">{{ p.proyecto_descripcion_corta }}</p>
+                    <a href="{% url 'project' p.id %}" class="related-btn">Leer más</a>
+                  </div>
+                </div>
+                {% endfor %}
+              </div>
+            </section>
+          </main>
+        </div>
+        {% endblock %}

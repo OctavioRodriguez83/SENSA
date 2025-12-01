@@ -1,0 +1,232 @@
+{% extends "../nav/index.html" %}
+  {% load static %}
+
+{% block title %}Tiendas - SB Admin{% endblock %}
+  {% block link_styles %}
+    <!-- DataTables Bootstrap 5 CSS -->
+    <link
+      href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css"
+      rel="stylesheet"
+    />
+    <!-- jQuery y DataTables JS -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+  {% endblock %}
+
+  {% block cuerpo %}
+  <div class="container-fluid py-4">
+    <div class="card shadow-sm border-0">
+      <div class="card-header bg-light">
+        <h3 class="mb-0 text-center">Tiendas</h3>
+      </div>
+      <div class="card-body bg-white">
+        <!-- Botón Agregar -->
+        <div class="d-flex justify-content-end mb-3">
+          <button
+            type="button"
+            class="btn btn-success fw-bold"
+            data-bs-toggle="modal"
+            data-bs-target="#staticBackdropAdd"
+          >
+            <i class="fas fa-plus me-1"></i> Agregar
+          </button>
+        </div>
+
+        <!-- Tabla de Tiendas -->
+        <div class="table-responsive">
+          <table
+            id="tiendasTable"
+            class="table table-striped table-hover table-bordered align-middle"
+          >
+            <thead class="table-light">
+              <tr>
+                <th>Nombre</th>
+                <th>Enlace</th>
+                <th>Descripción</th>
+                <th class="text-center">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for tienda in tiendas %}
+              <tr
+                class="clickable-row"
+                style="cursor:pointer"
+                data-name="{{ tienda.tienda_nombre }}"
+                data-enlace="{{ tienda.tienda_enlace }}"
+                data-desc="{{ tienda.tienda_descripcion }}"
+                data-img-url="/media-files/{{ tienda.tienda_imagen.name }}"
+                data-edit-url="{% url 'editar_tienda' tienda.id %}"
+                data-delete-url="{% url 'eliminar_tienda' tienda.id %}"
+              >
+                <td>{{ tienda.tienda_nombre }}</td>
+                <td>
+                  <a href="{{ tienda.tienda_enlace }}" target="_blank">
+                    {{ tienda.tienda_enlace }}
+                  </a>
+                </td>
+                <td>{{ tienda.tienda_descripcion }}</td>
+                <td class="text-center">
+                  <a
+                    href="{% url 'editar_tienda' tienda.id %}"
+                    class="btn btn-sm btn-warning me-1"
+                    onclick="event.stopPropagation()"
+                  >
+                    Editar <i class="bi bi-pencil-fill"></i>
+                  </a>
+                  <a
+                    href="{% url 'eliminar_tienda' tienda.id %}"
+                    class="btn btn-sm btn-danger"
+                    onclick="event.stopPropagation()"
+                  >
+                    Eliminar <i class="fas fa-trash-alt"></i>
+                  </a>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Agregar Tienda -->
+  <div
+    class="modal fade"
+    id="staticBackdropAdd"
+    data-bs-backdrop="static"
+    data-bs-keyboard="false"
+    tabindex="-1"
+    aria-labelledby="staticBackdropAddLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="staticBackdropAddLabel">Nueva Tienda</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <form action="{% url 'tiendas' %}" method="POST" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="modal-body">
+            <div class="mb-3">
+              <label class="form-label">Nombre de la tienda</label>
+              {{ formT.tienda_nombre }}
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Enlace</label>
+              {{ formT.tienda_enlace }}
+              <small class="text-muted">{{ formT.tienda_enlace.help_text }}</small>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Descripción</label>
+              {{ formT.tienda_descripcion }}
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Selecciona imagen</label>
+              {{ formT.tienda_imagen }}
+              <small class="text-muted">{{ formT.tienda_imagen.help_text }}</small>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+              Cancelar
+            </button>
+            <button type="submit" class="btn btn-primary">Guardar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Visualización Tienda -->
+  <div
+    class="modal fade"
+    id="viewTiendaModal"
+    tabindex="-1"
+    aria-labelledby="viewTiendaModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content border-0 rounded-4 shadow-lg">
+        <div class="modal-header bg-secondary bg-opacity-10 border-bottom-0">
+          <h5 class="modal-title fw-bold" id="viewTiendaModalLabel"></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body p-4">
+          <div class="row g-4">
+            <!-- Columna Imagen -->
+            <div class="col-md-5 text-center">
+              <div class="card border-0">
+                <img id="viewTiendaImg" src="" alt="" class="img-fluid rounded-3 shadow-sm" style="max-height:30rem; width:auto;">
+                <figcaption class="mt-2 text-muted small"></figcaption>
+              </div>
+            </div>
+            <!-- Columna Detalles -->
+            <div class="col-md-7 d-flex flex-column justify-content-between">
+              <div>
+                <h4 class="fw-semibold mb-3" id="viewTiendaModalLabelText"></h4>
+                <p id="viewTiendaDesc" class="fs-6 lh-base"></p>
+                <p id="viewTiendaEnlace"></p>
+              </div>
+              <div class="mt-4">
+                <a id="viewEditBtn" href="#" class="btn btn-outline-warning me-2">
+                  <i class="bi bi-pencil-fill"></i> Editar
+                </a>
+                <a id="viewDeleteBtn" href="#" class="btn btn-outline-danger me-2">
+                  <i class="fas fa-trash-alt"></i> Eliminar
+                </a>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script>
+    $(document).ready(function() {
+      $("#tiendasTable").DataTable({
+        language: {
+          search: "Buscar:",
+          lengthMenu: "Mostrar _MENU_ registros",
+          zeroRecords: "No se encontraron registros",
+          info: "Página _PAGE_ de _PAGES_",
+          infoEmpty: "Sin registros",
+          infoFiltered: "(filtrado de _MAX_ totales)",
+          paginate: {
+            first: "Primero",
+            last: "Último",
+            next: "Siguiente",
+            previous: "Anterior"
+          }
+        },
+        responsive: true,
+        autoWidth: false
+      });
+
+      $(".clickable-row").on("click", function() {
+        const name = $(this).data("name");
+        const enlace = $(this).data("enlace");
+        const desc = $(this).data("desc");
+        const imgUrl = $(this).data("img-url");
+        const editUrl = $(this).data("edit-url");
+        const deleteUrl = $(this).data("delete-url");
+
+        $("#viewTiendaModalLabel").text("Detalle de la Tienda");
+        $("#viewTiendaModalLabelText").text(name);
+        $("#viewTiendaDesc").html(desc);
+        $("#viewTiendaEnlace").html("<strong>Enlace:</strong> <a href='" + enlace + "' target='_blank'>" + enlace + "</a>");
+        $("#viewTiendaImg").attr({ src: imgUrl, alt: name });
+        $("#viewTiendaImg").siblings("figcaption").text("Vista previa de " + name);
+        $("#viewEditBtn").attr("href", editUrl);
+        $("#viewDeleteBtn").attr("href", deleteUrl);
+
+        new bootstrap.Modal(document.getElementById("viewTiendaModal")).show();
+      });
+    });
+  </script>
+  {% endblock %}

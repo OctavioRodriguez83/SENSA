@@ -1,0 +1,11 @@
+{% if productos.has_other_pages %}
+<nav class="store-pagination">
+  {% if productos.has_previous %}
+    <a href="?page={{ productos.previous_page_number }}" class="prev">&laquo;</a>
+  {% endif %}
+  <span>Página {{ productos.number }} de {{ productos.paginator.num_pages }}</span>
+  {% if productos.has_next %}
+    <a href="?page={{ productos.next_page_number }}" class="next">&raquo;</a>
+  {% endif %}
+</nav>
+{% endif %}

@@ -1,0 +1,399 @@
+
+/* --- SECCIÓN: ESTRUCTURA PRINCIPAL DEL HEADER Y CARRUSELES --- */
+
+#elemcarrusel {
+    display: flex;
+    flex-direction: row;
+    /* background-color: red; /* Color temporal para depuración, puedes eliminarlo */
+    width: 100%;
+    height: calc(100vh - 5.5rem);
+    /* Añade padding a elemcarrusel si quieres que todos los carruseles tengan un margen alrededor */
+    padding: 10px; /* Ajusta este valor si quieres un espacio alrededor de todo el grupo de carruseles */
+    box-sizing: border-box; /* Asegura que el padding se incluya en el tamaño de elemcarrusel */
+}
+
+#carrprincipal {
+    background-color: white; /* Color temporal para depuración, puedes eliminarlo */
+    width: 70%;
+    height: 100%;
+    /* Estilos para que parezca una card */
+    border: 1px solid #e0e0e0; /* Borde sutil */
+    border-radius: 10px; /* Esquinas redondeadas */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra para profundidad */
+    box-sizing: border-box; /* Fundamental para que el borde y padding no desborden */
+    margin-right: 10px; /* Margen para separarlo de la columna de carruseles secundarios */
+    overflow: hidden; /* Asegura que el contenido (imágenes) respete el border-radius */
+}
+
+#carrsecun {
+    display: flex;
+    flex-direction: column;
+    /* background-color: green; /* Color temporal para depuración, puedes eliminarlo */
+    width: 30%;
+    height: 100%;
+    /* No necesitamos padding aquí si ya lo aplicamos a #elemcarrusel o si #carruS y #carruI tienen margen.
+       Si quieres un espacio solo entre #carrsecun y #carrprincipal, el margin-right en #carrprincipal es mejor.
+       Si #carruS y #carruI tienen margin, el padding aquí sería redundante o causaría doble espacio. */
+    /* padding: 10px; */
+    /* box-sizing: border-box; */
+}
+
+#carruS {
+    background-color: white; /* Color temporal para depuración, puedes eliminarlo */
+    width: 100%;
+    height: 50%;
+    /* Estilos para que parezca una card */
+    border: 1px solid #e0e0e0; /* Borde más sutil */
+    border-radius: 10px; /* Esquinas redondeadas */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra para profundidad */
+    box-sizing: border-box; /* Fundamental para que el borde y padding no desborden */
+    margin-bottom: 10px; /* Margen para separarlo del carrusel inferior */
+    overflow: hidden; /* Asegura que el contenido (imágenes) respete el border-radius */
+}
+
+#carruI {
+    background-color: white; /* Color temporal para depuración, puedes eliminarlo */
+    width: 100%;
+    height: 50%;
+    /* Estilos para que parezca una card */
+    border: 1px solid #e0e0e0; /* Borde más sutil */
+    border-radius: 10px; /* Esquinas redondeadas */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra para profundidad */
+    box-sizing: border-box; /* Fundamental para que el borde y padding no desborden */
+    margin-top: 10px; /* Margen para separarlo del carrusel superior */
+    overflow: hidden; /* Asegura que el contenido (imágenes) respete el border-radius */
+}
+
+/* --- FIN SECCIÓN: ESTRUCTURA PRINCIPAL DEL HEADER Y CARRUSELES --- */
+
+
+
+/* --- SECCIÓN: ESTILOS GENERALES DE CARRUSELES (BOOTSTRAP OVERRIDES) --- */
+
+.carousel-item {
+    width: 100%;
+    /* Revertimos flexbox aquí. Bootstrap ya maneja el posicionamiento absoluto para la transición. */
+    /* display: flex; */
+    /* align-items: center; */
+    /* justify-content: center; */
+
+    /* La altura debe ser consistente para todos los items dentro del carrusel principal */
+    height: calc(100vh - 5.5rem); /* Altura del item para el carrusel principal */
+}
+
+/* Sobreescribimos la altura para los carruseles secundarios */
+#carruS .carousel-item,
+#carruI .carousel-item {
+    height: calc(50vh - 2.75rem); /* Altura del item para los carruseles secundarios */
+}
+
+/* Estilos para las imágenes dentro de los carruseles */
+.carousel-imgc1,
+.carousel-imgc2 {
+    width: 100%;
+    height: 100%; /* La imagen ocupará el 100% de la altura de su contenedor (.carousel-item) */
+    object-fit: contain; /* ¡Clave! La imagen se ajustará al contenedor sin cortarse ni distorsionarse */
+    display: block; /* Asegura que la imagen se comporte como un bloque */
+    margin: 0 auto; /* Centra la imagen horizontalmente si hay espacio extra */
+}
+.carousel-imgc1-2 {
+    width: 100%;
+    height: 100%; /* La imagen ocupará el 100% de la altura de su contenedor (.carousel-item) */
+    object-fit: cover; /* ¡Clave! La imagen se ajustará al contenedor sin cortarse ni distorsionarse */
+    display: block; /* Asegura que la imagen se comporte como un bloque */
+    margin: 0 auto; /* Centra la imagen horizontalmente si hay espacio extra */
+}
+
+/* Asegurar que las leyendas y su contenido se centren dentro de sus propios contenedores si es necesario */
+.carousel-caption {
+    /* Propiedades generales para todas las leyendas de los carruseles */
+    top: 10%; /* Posición vertical de la leyenda */
+    color: white;
+    text-shadow: 1px 1px 2px black;
+    -webkit-text-stroke: 0.1px black; /* Borde sutil al texto */
+    width: 80%; /* Ancho de la caja de la leyenda */
+    max-width: 600px; /* Ancho máximo para pantallas grandes */
+    padding: 1rem; /* Relleno interno de la caja de la leyenda */
+    left: auto; /* Reseteo de propiedades de posicionamiento */
+    right: auto; /* Reseteo de propiedades de posicionamiento */
+    transform: none; /* Asegura que no hay transformaciones que interfieran */
+    /* Agregar flexbox para centrar contenido verticalmente dentro del caption si es necesario */
+    display: flex; /* Añadido para centrar el contenido del caption */
+    flex-direction: column; /* Apila el contenido del caption */
+    align-items: flex-start; /* Alinea a la izquierda por defecto */
+    justify-content: center; /* Centra verticalmente el contenido del caption */
+}
+
+/* Leyendas del carrusel alineadas a la izquierda */
+.carousel-caption.caption-left {
+    left: 10%; /* Posiciona la caja a 10% del borde izquierdo */
+    right: auto; /* Asegura que 'right' no interfiera */
+    align-items: flex-start; /* Alinea el contenido a la izquierda */
+}
+
+/* Leyendas del carrusel alineadas a la derecha */
+.carousel-caption.caption-right {
+    left: auto; /* Asegura que 'left' no interfiera */
+    right: 10%; /* Posiciona la caja a 10% del borde derecho */
+    align-items: flex-end; /* Alinea el contenido a la derecha */
+}
+/* Alineación de contenido específico dentro de leyendas izquierdas */
+.carousel-caption.caption-left .imgpost,
+.carousel-caption.caption-left h1,
+.carousel-caption.caption-left p {
+    text-align: left;
+}
+
+/* Alineación de contenido específico dentro de leyendas derechas */
+.carousel-caption.caption-right .imgpost,
+.carousel-caption.caption-right h1,
+.carousel-caption.caption-right p {
+    text-align: right;
+}
+
+/* Estilos para la imagen del post dentro de la leyenda del carrusel */
+.carousel-caption .imgpost {
+    width: 15vw;
+    height: 15vw;
+    border-radius: 50%; /* Hace la imagen circular */
+    object-fit: cover;
+    margin-bottom: 15px;
+    display: block;
+}
+
+/* Ajuste de margen para imagen en leyenda derecha */
+.carousel-caption.caption-right .imgpost {
+    margin-left: auto; /* Empuja la imagen a la derecha */
+    margin-right: 0;
+}
+
+/* Ajuste de margen para imagen en leyenda izquierda */
+.carousel-caption.caption-left .imgpost {
+    margin-right: auto; /* Empuja la imagen a la izquierda */
+    margin-left: 0;
+}
+
+/* Tamaño de fuente para títulos en leyendas */
+.carousel-caption h1 {
+    font-size: 3vw;
+}
+
+/* Tamaño de fuente para párrafos en leyendas */
+.carousel-caption p {
+    font-size: 2vw;
+}
+
+/* --- FIN SECCIÓN: ESTILOS GENERALES DE CARRUSELES --- */
+
+
+/* --- SECCIÓN: GALERÍA DE SOCIOS COMERCIALES --- */
+
+.galeria {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 16px; /* Espacio entre las imágenes de la galería */
+}
+
+.galeria img {
+    width: auto; /* Se ajusta automáticamente al contenido y responsive */
+    height: 15vh; /* Altura fija relativa al viewport */
+    border-radius: 10px;
+    display: block;
+}
+
+/* Responsive para tabletas (3 columnas) */
+@media (max-width: 992px) {
+    .galeria img {
+        width: calc(33.33% - 16px);
+    }
+}
+
+/* Responsive para móviles (2 columnas) */
+@media (max-width: 768px) {
+    .galeria img {
+        width: calc(50% - 16px);
+    }
+}
+
+/* Responsive para extra pequeños (1 columna) */
+@media (max-width: 480px) {
+    .galeria img {
+        width: 100%;
+    }
+}
+
+/* --- FIN SECCIÓN: GALERÍA DE SOCIOS COMERCIALES --- */
+
+
+/* --- SECCIÓN: ESTILOS GENERALES DE TARJETAS (SOBRE NOSOTROS, SERVICIOS) --- */
+
+#aboutimg {
+    width: 15vw;
+    height: 15vw;
+    border-radius: 50%; /* Hace la imagen circular */
+    object-fit: cover;
+    margin-bottom: 15px;
+}
+
+#cards {
+    width: 90%;
+    justify-content: center;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.card {
+    margin-top: 1%;
+    margin-bottom: 1%;
+    padding: 3%;
+    display: flex;
+    height: auto;
+    flex-direction: row; /* Las tarjetas se muestran en fila */
+    justify-content: center;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Sombra para las tarjetas */
+    border-radius: 16px;
+    background-color: #fff;
+}
+
+.imagencont {
+    display: flex;
+    width: 50%;
+    height: auto;
+    justify-content: center;
+    align-items: center;
+    padding-right: 1.5%;
+    overflow: hidden;
+}
+
+.imagencont video,
+.imagencont iframe {
+    width: 100%;
+    height: auto;
+    display: block;
+    border: none;
+}
+
+.textcardcont {
+    display: flex;
+    width: 50%;
+    height: auto;
+    justify-content: center;
+    align-items: center;
+    text-align: justify;
+    flex-direction: column;
+}
+
+.imgcards {
+    height: 25vh;
+    width: auto;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+/* --- FIN SECCIÓN: ESTILOS GENERALES DE TARJETAS --- */
+
+
+/* --- SECCIÓN: PRODUCTOS DESTACADOS (ACTUALMENTE NO USADO EN HTML PROPORCIONADO) --- */
+/* Si no planeas usar esta sección, puedes eliminarla por completo. */
+
+.seccion-title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 2rem 0 1rem;
+    text-align: center;
+}
+
+.carousel-destacados {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    overflow: hidden;
+    margin: 2rem 0;
+}
+
+.carousel-btn {
+    background: transparent;
+    color: #1E1E1E;
+    border: none;
+    box-shadow: none;
+    opacity: 0.5;
+    width: 2.5rem;
+    height: 2.5rem;
+    font-size: 2rem;
+    border-radius: 50%;
+    transition: opacity 0.2s, background 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.carousel-btn:hover {
+    opacity: 1;
+    background: transparent;
+    color: #000;
+}
+
+.carousel-cards {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+    width: 100%;
+}
+
+.card-destacado {
+    width: 100%;
+    background-color: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: transform 0.3s ease;
+}
+
+.card-destacado:hover {
+    transform: translateY(-5px);
+}
+
+.card-destacado img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 12px;
+    margin-bottom: 1rem;
+}
+
+.card-destacado h4 {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #1E1E1E;
+    margin-bottom: 0.5rem;
+    text-align: center;
+}
+
+.card-destacado p {
+    font-size: 0.95rem;
+    color: #444;
+    text-align: center;
+    line-height: 1.4;
+}
+
+.card-destacado a {
+    width: 100%;
+}
+
+@media (max-width: 900px) {
+    .card-destacado {
+        flex: 0 0 45%;
+    }
+}
+
+@media (max-width: 600px) {
+    .card-destacado {
+        flex: 0 0 90%;
+    }
+}
+
+/* --- FIN SECCIÓN: PRODUCTOS DESTACADOS --- */

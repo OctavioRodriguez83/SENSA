@@ -1,0 +1,323 @@
+{% extends '../nav/index.html' %}
+{% block title %}Importaciones Excel{% endblock %}
+
+{% block cuerpo %}
+<div class="container py-4">
+  <h2 class="mb-4">Importar datos por Excel</h2>
+  <p class="text-muted mb-4">
+    Recuerda que las plantillas a utilizar se encuentran en la
+    <a href="{% url 'plantillas' %}">sección de plantillas</a>.
+  </p>
+
+  <!-- Sección 1: Empresas y Almacenes -->
+  <h4>Empresas y Almacenes</h4>
+  <p class="text-muted">Primero sube los datos de empresas, luego almacenes.</p>
+  <div class="row row-cols-1 row-cols-md-2 g-4 mb-3">
+    <!-- EMPRESAS -->
+    <div class="col">
+      <div class="card h-100 shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title">Empresas</h5>
+          <p class="card-text text-muted">
+            Asegúrate de subir primero las empresas y que existan en la base de datos.
+          </p>
+          <!-- Form Excel -->
+          <form method="POST" enctype="multipart/form-data"
+                action="{% url 'import_excel' 'empresas' %}"
+                class="upload-excel-form">
+            {% csrf_token %}
+            <input type="file" name="import_file"
+                   class="form-control form-control-sm mb-2" required/>
+            <button type="submit" class="btn btn-primary btn-sm">
+              Importar Excel
+            </button>
+          </form>
+
+          <!-- Separador -->
+          <p class="small text-muted mt-3">
+            📁 Los datos (Excel) y las imágenes se suben por separado.
+          </p>
+
+          <!-- Form Imágenes -->
+          <form class="upload-images-form" data-model="empresas"
+                enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="file" name="images" multiple accept="image/*"
+                   class="form-control form-control-sm mb-2"/>
+            <button type="submit" class="btn btn-secondary btn-sm">
+              Subir Imágenes
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- ALMACENES (solo Excel) -->
+    <div class="col">
+      <div class="card h-100 shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title">Almacenes</h5>
+          <p class="card-text text-muted">Verifica que haya empresas registradas antes de cargar.</p>
+          <form method="POST" enctype="multipart/form-data"
+                action="{% url 'import_excel' 'almacenes' %}"
+                class="upload-excel-form">
+            {% csrf_token %}
+            <input type="file" name="import_file"
+                   class="form-control form-control-sm mb-2" required/>
+            <button type="submit" class="btn btn-primary btn-sm">
+              Importar Excel
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr/>
+
+  <!-- Sección 2: Categorías, Marcas y Productos -->
+  <h4>Categoría, Marcas y Productos</h4>
+  <p class="text-muted">El orden sugerido es: categorías, marcas y al final productos.</p>
+  <div class="row row-cols-1 row-cols-md-3 g-4">
+    <!-- CATEGORÍAS -->
+    <div class="col">
+      <div class="card h-100 shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title">Categorías</h5>
+          <p class="card-text text-muted">Sube categorías antes de productos y verifica que existan.</p>
+          <form method="POST" enctype="multipart/form-data"
+                action="{% url 'import_excel' 'categorias' %}"
+                class="upload-excel-form">
+            {% csrf_token %}
+            <input type="file" name="import_file"
+                   class="form-control form-control-sm mb-2" required/>
+            <button type="submit" class="btn btn-primary btn-sm">
+              Importar Excel
+            </button>
+          </form>
+          <p class="small text-muted mt-3">
+            📁 Los datos (Excel) y las imágenes se suben por separado.
+          </p>
+          <form class="upload-images-form" data-model="categorias"
+                enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="file" name="images" multiple accept="image/*"
+                   class="form-control form-control-sm mb-2"/>
+            <button type="submit" class="btn btn-secondary btn-sm">
+              Subir Imágenes
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- MARCAS -->
+    <div class="col">
+      <div class="card h-100 shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title">Marcas</h5>
+          <p class="card-text text-muted">Verifica que existan antes de crear productos.</p>
+          <form method="POST" enctype="multipart/form-data"
+                action="{% url 'import_excel' 'marcas' %}"
+                class="upload-excel-form">
+            {% csrf_token %}
+            <input type="file" name="import_file"
+                   class="form-control form-control-sm mb-2" required/>
+            <button type="submit" class="btn btn-primary btn-sm">
+              Importar Excel
+            </button>
+          </form>
+          <p class="small text-muted mt-3">
+            📁 Los datos (Excel) y las imágenes se suben por separado.
+          </p>
+          <form class="upload-images-form" data-model="marcas"
+                enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="file" name="images" multiple accept="image/*"
+                   class="form-control form-control-sm mb-2"/>
+            <button type="submit" class="btn btn-secondary btn-sm">
+              Subir Imágenes
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRODUCTOS -->
+    <div class="col">
+      <div class="card h-100 shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title">Productos</h5>
+          <p class="card-text text-muted">Verifica que existan marcas y categorías antes de cargar.</p>
+          <form method="POST" enctype="multipart/form-data"
+                action="{% url 'import_excel' 'products' %}"
+                class="upload-excel-form">
+            {% csrf_token %}
+            <input type="file" name="import_file"
+                   class="form-control form-control-sm mb-2" required/>
+            <button type="submit" class="btn btn-primary btn-sm">
+              Importar Excel
+            </button>
+          </form>
+          <p class="small text-muted mt-3">
+            📁 Los datos (Excel) y las imágenes se suben por separado.
+          </p>
+          <form class="upload-images-form" data-model="productos"
+                enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="file" name="images" multiple accept="image/*"
+                   class="form-control form-control-sm mb-2"/>
+            <button type="submit" class="btn btn-secondary btn-sm">
+              Subir Imágenes
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr/>
+
+  <!-- Sección 3: Tiendas -->
+  <h4>Tiendas</h4>
+  <p class="text-muted">Las tiendas pueden cargarse independientemente.</p>
+  <div class="row row-cols-1 row-cols-md-1 g-4">
+    <div class="col">
+      <div class="card h-100 shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title">Tiendas</h5>
+          <p class="card-text text-muted">Puedes subirlas en cualquier momento.</p>
+          <form method="POST" enctype="multipart/form-data"
+                action="{% url 'import_excel' 'tiendas' %}"
+                class="upload-excel-form">
+            {% csrf_token %}
+            <input type="file" name="import_file"
+                   class="form-control form-control-sm mb-2" required/>
+            <button type="submit" class="btn btn-primary btn-sm">
+              Importar Excel
+            </button>
+          </form>
+          <p class="small text-muted mt-3">
+            📁 Los datos (Excel) y las imágenes se suben por separado.
+          </p>
+          <form class="upload-images-form" data-model="tiendas"
+                enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="file" name="images" multiple accept="image/*"
+                   class="form-control form-control-sm mb-2"/>
+            <button type="submit" class="btn btn-secondary btn-sm">
+              Subir Imágenes
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modales existentes -->
+<div class="modal fade" id="almacenesModal" tabindex="-1" aria-hidden="true">…</div>
+<div class="modal fade" id="productosModal" tabindex="-1" aria-hidden="true">…</div>
+
+<!-- Modal de progreso (reutilizado) -->
+<div class="modal fade" id="processModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Progreso de Importación/Subida</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <pre id="processOutput" class="bg-light p-3" style="max-height:400px;overflow-y:auto;"></pre>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Script AJAX para enviar Excel -->
+<!-- Script AJAX para enviar Excel -->
+<script>
+document.querySelectorAll('.upload-excel-form').forEach(form => {
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    const fd = new FormData(this);
+    const output = document.getElementById('processOutput');
+    output.textContent = 'Procesando importación...\n';
+    const modal = new bootstrap.Modal(document.getElementById('processModal'));
+    modal.show();
+
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', this.action);
+    xhr.setRequestHeader('X-CSRFToken', fd.get('csrfmiddlewaretoken'));
+
+    // Progreso de carga
+    xhr.upload.onprogress = evt => {
+      if (evt.lengthComputable) {
+        const pct = Math.round(evt.loaded / evt.total * 100);
+        output.textContent = `Progreso: ${pct}%\n`;
+      }
+    };
+
+    xhr.onload = () => {
+      let resp = { status: 'error', message: 'Respuesta inválida.' };
+      try { resp = JSON.parse(xhr.responseText); } catch {}
+
+      if (xhr.status === 200 && resp.status === 'success') {
+        // Mostrar todas las líneas de salida
+        output.textContent = Array.isArray(resp.messages)
+          ? resp.messages.join('\n')
+          : '✅ Importación completada.';
+      } else {
+        output.textContent = `❌ ${resp.message || 'Error en la importación.'}`;
+      }
+    };
+
+    xhr.onerror = () => {
+      output.textContent = '❌ Error de red durante la importación.';
+    };
+
+    xhr.send(fd);
+  });
+});
+</script>
+
+
+<!-- Script AJAX para subir imágenes -->
+<script>
+document.querySelectorAll('.upload-images-form').forEach(form => {
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    const modelSlug = this.dataset.model;
+    const fd = new FormData(this);
+    fd.append('model_slug', modelSlug);
+    const output = document.getElementById('processOutput');
+    output.textContent = 'Subiendo imágenes...\n';
+    const modal = new bootstrap.Modal(document.getElementById('processModal'));
+    modal.show();
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', '{% url "upload_images" %}');
+    xhr.setRequestHeader('X-CSRFToken', fd.get('csrfmiddlewaretoken'));
+    xhr.upload.onprogress = evt => {
+      if (evt.lengthComputable) {
+        const pct = Math.round(evt.loaded / evt.total * 100);
+        output.textContent = `Progreso: ${pct}%\n`;
+      }
+    };
+    xhr.onload = () => {
+      let resp = {status:'error', message:'Respuesta inválida.'};
+      try { resp = JSON.parse(xhr.responseText); } catch {}
+      output.textContent = (xhr.status===200 && resp.status==='success')
+        ? `✅ ${resp.message}`
+        : `❌ ${resp.message}`;
+    };
+    xhr.onerror = () => {
+      output.textContent = '❌ Error de red durante la subida.';
+    };
+    xhr.send(fd);
+  });
+});
+</script>
+{% endblock %}
