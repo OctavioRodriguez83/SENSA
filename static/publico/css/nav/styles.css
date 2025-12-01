@@ -51,7 +51,7 @@ html {
   scroll-padding-top: 4rem; /* Ajusta al alto de la navbar */
 }
 body{
-  background-color: #AAAAAA;
+  background-color: #CCCCCC;
 }
 main {
   position: relative;
@@ -59,7 +59,7 @@ main {
 }
 
 #nav {
-  background: #001F3F;
+  background: #FBB017;
 }
 
 /* Logo y menú con sus propios márgenes */
@@ -98,7 +98,7 @@ main {
 
 
 .footer-container {
-  background-color: #001F3F;
+  background-color: #FBB017;
   color: white;
   padding: 1.5rem 3rem;
   font-family: sans-serif;
